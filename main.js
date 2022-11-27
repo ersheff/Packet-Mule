@@ -70,7 +70,7 @@ function createWindow () {
     // ----------
 
     socket.on("control", incoming => {
-      const msg = incoming;
+      const msg = incoming.data;
       oscSender.send(msg, 8001, 'localhost');
     });
 
