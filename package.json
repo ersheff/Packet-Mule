@@ -1,0 +1,18 @@
+{
+  "name": "helpful-hand-lighten-p7in9",
+  "productName": "helpful-hand-lighten-p7in9",
+  "description": "My Electron application description",
+  "keywords": [],
+  "main": "./main.js",
+  "version": "1.0.0",
+  "author": "sheffie",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "socket.io-client": "^4.5.4"
+  },
+  "devDependencies": {
+    "electron": "^21.3.1"
+  }
+}
