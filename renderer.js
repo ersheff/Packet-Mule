@@ -1,36 +1,67 @@
-document.querySelector("#connect-button").addEventListener("click", () => {
-  const username = document.querySelector("#username-input").value;
+const usernameInput = document.querySelector("#username-input");
+const connectButton = document.querySelector("#connect-button");
+const chatInput = document.querySelector("#chat-input");
+
+const userList = document.querySelector("#user-list");
+const pmConsole = document.querySelector("#pm-console");
+
+
+// events that trigger main methods
+// connect listener
+
+connectButton.addEventListener("click", () => {
+  const username = usernameInput.value;
   if (username) { window.pmc.connect(username); }
-  else pmConsole("please provide a username before connecting");
-});
-
-window.pmc.onConfirmUser((event, data) => {
-  document.querySelector("#username-input").value = "";
-  document.querySelector("#username-input").placeholder = data;
-});
-
-window.pmc.onMessage((event, data) => {
-  pmConsole(`${data.sender}: ${data.content}`);
-});
-
-window.pmc.onServerMessage((event, data) => {
-  pmConsole(`server: ${data.content}`, "server");
-});
-
-window.pmc.onUserList((event, data) => {
-  for (u of data.data) {
+  else {
     const newLine = document.createElement("li");
-    newLine.innerText = u;
-    document.querySelector("#user-list").appendChild(newLine);
+    newLine.innerText = "please provide a username before connecting";
+    newLine.style.color = "red";
+    pmConsole.appendChild(newLine);
+  };
+});
+
+// chat-to-server listener
+chatInput.addEventListener("change", () => {
+  window.pmc.chatMessage(chatInput.value);
+  chatInput.value = "";
+  chatInput.placeholder = "chat";
+})
+
+
+// events that render content to window 
+
+window.pmc.onConfirmUsername((event, incoming) => {
+  usernameInput.value = "";
+  usernameInput.placeholder = incoming.username;
+  connectButton.disabled = true;
+});
+
+window.pmc.onChatMessage((event, incoming) => {
+  const newLine = document.createElement("li");
+  newLine.innerText = `${incoming.sender}: ${incoming.content}`;
+  pmConsole.appendChild(newLine);
+});
+
+window.pmc.onServerMessage((event, incoming) => {
+  const newLine = document.createElement("li");
+  newLine.innerText = `${incoming.sender}: ${incoming.content}`;
+  newLine.style.color = "red";
+  pmConsole.appendChild(newLine);
+});
+
+window.pmc.onUserList((event, incoming) => {
+  for (user of incoming.users) {
+    const newLine = document.createElement("li");
+    newLine.innerText = user;
+    userList.appendChild(newLine);
   }
 });
 
-function pmConsole(text, level) {
-  const newLine = document.createElement("li");
-  newLine.innerText = text;
-  if (level === "server") newLine.style.color = "red";
-  document.querySelector("#pm-console").appendChild(newLine);
-}
+window.pmc.onConsoleLog((event, message) => {
+  console.log(message);
+});
+
+
 
 /*document.querySelector("#open-file").onclick = () => {
   console.log("launching the file...");

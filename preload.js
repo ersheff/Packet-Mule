@@ -3,19 +3,23 @@ const { contextBridge, ipcRenderer } = require("electron");
 
 const pmcAPI = {
   
-  // socket methods
+  // event listeners (coming from renderer, going to main)
   connect: (username) => ipcRenderer.send("connect", username),
 
-  onConfirmUser: (callback) => ipcRenderer.on("confirm-user", callback),
+  chatMessage: (message) => ipcRenderer.send("chat-message", message),
 
-  onMessage: (callback) => ipcRenderer.on("message", callback),
+  launchFile: (fileName) => ipcRenderer.send("launch-file", fileName),
 
-  onServerMessage: (callback) => ipcRenderer.on("server-message", callback),
+  // event listeners (coming from main, going to renderer)
+  onConfirmUsername: (username) => ipcRenderer.on("confirm-username", username),
+  
+  onChatMessage: (message) => ipcRenderer.on("chat-message", message),
 
-  onUserList : (callback) => ipcRenderer.on("user-list", callback),
+  onServerMessage: (message) => ipcRenderer.on("server-message", message),
 
-  // system methods
-  launchFile: (fileName) => ipcRenderer.send("launch-file", f)
+  onUserList: (userList) => ipcRenderer.on("user-list", userList),
+
+  onConsoleLog: (message) => ipcRenderer.on("console-log", message)
 
 };
 
