@@ -71,8 +71,7 @@ function createWindow () {
 
     socket.on("control", incoming => {
       const msg = incoming;
-      mainWindow.webContents.send("console-log", "Messages received " + msg);
-      //oscSender.send(msg, 8000, 'localhost');
+      oscSender.send(msg, 8001, 'localhost');
     });
 
     socket.on("chat-message", incoming => {
