@@ -24,7 +24,7 @@ function createWindow () {
       }
     });
 
-    // ----------
+  // ----------
     // OSC bridge
 
     // bridge sender - coming in from server
@@ -42,8 +42,17 @@ function createWindow () {
     });
 
     oscReceiver.on("message", (msg) => {
+      const sansFirstSlash = msg.slice(1);
+      const nextSlashIndex = sansFirstSlash.indexOf(0x2f);
+      const slicedName = sansFirstSlash.slice(0, nextSlashIndex);
+      let nameString = "";
+      for (s of slicedName) {
+        nameString += String.fromCharCode(s);
+      }
+      let remaining = sansFirstSlash.slice(nextSlashIndex);
       const outgoing = {
-        data: msg
+        target: nameString,
+        data: remaining
       }
       socket.emit("control", outgoing);
     });
@@ -57,7 +66,7 @@ function createWindow () {
     oscReceiver.bind(7001);
 
 
-    // ---------- end OSC bridge
+    // ---------- end OSC bridge  
 
 
     ipcMain.on("chat-message", (event, message) => {
