@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 199.0, 254.0, 744.0, 339.0 ],
+		"rect" : [ 848.0, 244.0, 744.0, 339.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -104,7 +104,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 162.0, 250.0, 174.0, 51.0 ],
+					"patching_rect" : [ 182.0, 259.5, 174.0, 51.0 ],
 					"text" : "passing lists through sprintf is one way to assemble longer osc addresses"
 				}
 
@@ -117,7 +117,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 141.0, 226.0, 50.0, 22.0 ]
+					"patching_rect" : [ 161.0, 222.0, 50.0, 22.0 ]
 				}
 
 			}
@@ -125,11 +125,11 @@
 				"box" : 				{
 					"id" : "obj-19",
 					"maxclass" : "newobj",
-					"numinlets" : 3,
+					"numinlets" : 4,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 41.0, 250.0, 119.0, 22.0 ],
-					"text" : "pak max-position x 0"
+					"patching_rect" : [ 41.0, 250.0, 139.0, 22.0 ],
+					"text" : "pak pm max-position x 0"
 				}
 
 			}
@@ -137,11 +137,11 @@
 				"box" : 				{
 					"id" : "obj-17",
 					"maxclass" : "newobj",
-					"numinlets" : 3,
+					"numinlets" : 4,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 41.0, 274.0, 105.0, 22.0 ],
-					"text" : "sprintf /%s/%s %d"
+					"patching_rect" : [ 41.0, 274.0, 125.0, 22.0 ],
+					"text" : "sprintf /%s/%s/%s %d"
 				}
 
 			}
@@ -202,8 +202,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 41.0, 113.0, 71.0, 22.0 ],
-					"text" : "max-test $1"
+					"patching_rect" : [ 41.0, 113.0, 91.0, 22.0 ],
+					"text" : "pm/max-test $1"
 				}
 
 			}
@@ -299,7 +299,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-19", 2 ],
+					"destination" : [ "obj-19", 3 ],
 					"source" : [ "obj-23", 0 ]
 				}
 
