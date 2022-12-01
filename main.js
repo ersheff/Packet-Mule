@@ -45,9 +45,11 @@ function createWindow () {
       const nextSlashIndex = msg.indexOf(0x2F, 1);
       const username = msg.subarray(1, nextSlashIndex).toString("ascii");
       const data = msg.subarray(nextSlashIndex);
+      const targetLength = Math.ceil(data.length/4)*4;
+      const paddedData = Buffer.concat([data], targetLength);
       const outgoing = {
         target: username,
-        data: data
+        data: paddedData
       }
       socket.emit("control", outgoing);
     });
