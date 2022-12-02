@@ -81,7 +81,7 @@ function createWindow () {
       const sender = incoming.sender;
       const msg = incoming.data;
       const shortAddress = msg.address;
-      const fullAddress = sender+shortAddress;
+      const fullAddress = `/${sender}${shortAddress}`;
       msg.address = fullAddress;
       udpPort.send(msg, "localhost", 8001);
     });
