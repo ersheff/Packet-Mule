@@ -19,10 +19,11 @@ oscReceiver.on("error", (err) => {
 
 oscReceiver.on("message", (msg) => {
   const nextSlashIndex = msg.indexOf(0x2F, 1);
-  const sender = msg.subarray(1, nextSlashIndex).toString("ascii");
+  const username = msg.subarray(1, nextSlashIndex).toString("ascii");
   const data = msg.subarray(nextSlashIndex);
-  const targetLength = Math.ceil(data.length/4)*4;
-  const paddedData = Buffer.concat([data], targetLength);
+  const padding = Buffer.from("0".repeat(nextSlashIndex));
+  const paddedData = Buffer.concat([data, padding]);
+  console.log(paddedData.toString());
 });
 
 oscReceiver.on("listening", () => {
