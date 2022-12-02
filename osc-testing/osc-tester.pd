@@ -5,7 +5,6 @@
 #X obj 302 86 oscparse;
 #X obj 25 207 netsend -u -b;
 #X obj 25 157 list trim;
-#X obj 25 96 oscformat pd-test;
 #X obj 302 114 list trim;
 #X msg 94 156 connect localhost 7001;
 #X obj 302 55 netreceive -u -b 8001;
@@ -13,11 +12,12 @@
 #X text 23 26 Sending to other Packet Mule users;
 #X text 25 261 The Packet Mule OSC bridge accepts incoming messages
 on port 7001 and sends them back on port 8001;
-#X connect 0 0 8 0;
-#X connect 1 0 6 0;
-#X connect 3 0 7 0;
+#X obj 25 96 oscformat all pd-test;
+#X connect 0 0 7 0;
+#X connect 1 0 12 0;
+#X connect 3 0 6 0;
 #X connect 5 0 4 0;
-#X connect 6 0 5 0;
-#X connect 7 0 2 0;
-#X connect 8 0 4 0;
-#X connect 9 0 3 0;
+#X connect 6 0 2 0;
+#X connect 7 0 4 0;
+#X connect 8 0 3 0;
+#X connect 12 0 5 0;
