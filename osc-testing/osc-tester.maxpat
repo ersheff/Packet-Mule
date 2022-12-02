@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 848.0, 244.0, 744.0, 339.0 ],
+		"rect" : [ 259.0, 219.0, 712.0, 339.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -104,7 +104,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 182.0, 259.5, 174.0, 51.0 ],
+					"patching_rect" : [ 182.0, 241.5, 174.0, 51.0 ],
 					"text" : "passing lists through sprintf is one way to assemble longer osc addresses"
 				}
 
@@ -117,7 +117,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 161.0, 222.0, 50.0, 22.0 ]
+					"patching_rect" : [ 149.0, 205.5, 50.0, 22.0 ]
 				}
 
 			}
@@ -128,8 +128,8 @@
 					"numinlets" : 4,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 41.0, 250.0, 139.0, 22.0 ],
-					"text" : "pak pm max-position x 0"
+					"patching_rect" : [ 41.0, 232.0, 122.0, 22.0 ],
+					"text" : "pak all max-slider a 0"
 				}
 
 			}
@@ -140,21 +140,8 @@
 					"numinlets" : 4,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 41.0, 274.0, 125.0, 22.0 ],
+					"patching_rect" : [ 41.0, 256.0, 125.0, 22.0 ],
 					"text" : "sprintf /%s/%s/%s %d"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"bubble" : 1,
-					"id" : "obj-16",
-					"linecount" : 2,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 114.0, 129.5, 137.0, 37.0 ],
-					"text" : "prepends a slash to start the osc address"
 				}
 
 			}
@@ -185,25 +172,13 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-11",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 41.0, 137.0, 59.0, 22.0 ],
-					"text" : "prepend /"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-10",
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 41.0, 113.0, 91.0, 22.0 ],
-					"text" : "pm/max-test $1"
+					"patching_rect" : [ 41.0, 113.0, 107.0, 22.0 ],
+					"text" : "/all/max-test $1 $2"
 				}
 
 			}
@@ -248,7 +223,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 41.0, 169.0, 138.0, 22.0 ],
+					"patching_rect" : [ 41.0, 151.0, 138.0, 22.0 ],
 					"text" : "udpsend 127.0.0.1 7001"
 				}
 
@@ -256,15 +231,8 @@
  ],
 		"lines" : [ 			{
 				"patchline" : 				{
-					"destination" : [ "obj-11", 0 ],
-					"source" : [ "obj-10", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
-					"source" : [ "obj-11", 0 ]
+					"source" : [ "obj-10", 0 ]
 				}
 
 			}
@@ -278,7 +246,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
-					"midpoints" : [ 50.5, 304.0, 26.0, 304.0, 26.0, 163.0, 50.5, 163.0 ],
+					"midpoints" : [ 50.5, 286.0, 26.0, 286.0, 26.0, 145.0, 50.5, 145.0 ],
 					"source" : [ "obj-17", 0 ]
 				}
 

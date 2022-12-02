@@ -1,35 +1,34 @@
-const oscSender = require("dgram").createSocket("udp4");
-const oscReceiver = require("dgram").createSocket("udp4");
+const osc = require("osc");
 
-// sender
-oscSender.on("error", (err) => {
-  const message = `server error:\n${err.stack}`;
-  console.log(message);
-  oscSender.close();
+const udpPort = new osc.UDPPort({
+  localAddress: "localhost",
+  localPort: 7001,
+  metadata: true
 });
 
-//oscSender.send(msg, 8001, 'localhost');
-
-// receiver
-oscReceiver.on("error", (err) => {
-  const message = `server error:\n${err.stack}`;
-  console.log(message);
-  oscReceiver.close();
+// listen for incoming OSC messages.
+udpPort.on("message", (msg) => {
+  const fullAddress = msg.address;
+  const slashIndex = fullAddress.indexOf("/", 1);
+  const targetUsername = fullAddress.slice(1, slashIndex);
+  const shortAddress = fullAddress.slice(slashIndex);
+  msg.address = shortAddress;
+  udpPort.send(msg, "localhost", 8001);
 });
 
-oscReceiver.on("message", (msg) => {
-  const nextSlashIndex = msg.indexOf(0x2F, 1);
-  const username = msg.subarray(1, nextSlashIndex).toString("ascii");
-  const data = msg.subarray(nextSlashIndex);
-  const padding = Buffer.from("0".repeat(nextSlashIndex));
-  const paddedData = Buffer.concat([data, padding]);
-  console.log(paddedData.toString());
+// Ooen the socket
+udpPort.open();
+
+// send an OSC message Wwen the port is ready
+udpPort.on("ready", () => {
+  udpPort.send({
+      address: "/handshake",
+      args: [
+          {
+              type: "i",
+              value: "1"
+          }
+      ]
+  }, "localhost", 8001);
 });
 
-oscReceiver.on("listening", () => {
-    const address = oscReceiver.address();
-    const message = `server listening on ${address.address}:${address.port}`;
-    console.log(message);
-});
-
-oscReceiver.bind(7001);

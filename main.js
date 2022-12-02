@@ -3,8 +3,7 @@ const { app, BrowserWindow, Menu, ipcMain, shell } = require("electron");
 const path = require("path");
 const { io } = require("socket.io-client");
 
-const oscSender = require("dgram").createSocket("udp4");
-const oscReceiver = require("dgram").createSocket("udp4");
+const osc = require("osc");
 
 // create browser window and load index.html
 function createWindow () {
@@ -27,41 +26,44 @@ function createWindow () {
   // ----------
     // OSC bridge
 
-    // bridge sender - coming in from server
-    oscSender.on("error", (err) => {
-      const message = `server error:\n${err.stack}`;
-      mainWindow.webContents.send("console-log", message);
-      oscSender.close();
+    const listenPort = 7001;
+    const sendPort = 8001;
+
+    const udpPort = new osc.UDPPort({
+      localAddress: "localhost",
+      localPort: listenPort,
+      metadata: true
     });
 
-    // bridge receiver - sending out to server
-    oscReceiver.on("error", (err) => {
-      const message = `server error:\n${err.stack}`;
-      mainWindow.webContents.send("console-log", message);
-      oscReceiver.close();
-    });
-
-    oscReceiver.on("message", (msg) => {
-      const nextSlashIndex = msg.indexOf(0x2F, 1);
-      const username = msg.subarray(1, nextSlashIndex).toString("ascii");
-      const data = msg.subarray(nextSlashIndex);
-      const padding = Buffer.from("0".repeat(nextSlashIndex));
-      const paddedData = Buffer.concat([data, padding]);
+    // listen for incoming OSC messages.
+    udpPort.on("message", (msg) => {
+      const fullAddress = msg.address;
+      const slashIndex = fullAddress.indexOf("/", 1);
+      const targetUsername = fullAddress.slice(1, slashIndex);
+      const shortAddress = fullAddress.slice(slashIndex);
+      msg.address = shortAddress;
       const outgoing = {
-        target: username,
-        data: paddedData
+        target: targetUsername,
+        data: msg
       }
       socket.emit("control", outgoing);
     });
 
-    oscReceiver.on("listening", () => {
-        const address = oscReceiver.address();
-        const message = `server listening on ${address.address}:${address.port}`;
-        mainWindow.webContents.send("console-log", message);
+    // ooen the socket
+    udpPort.open();
+
+    // send an OSC message when the port is ready
+    udpPort.on("ready", () => {
+      udpPort.send({
+          address: "/handshake",
+          args: [
+              {
+                  type: "i",
+                  value: "1"
+              }
+          ]
+      }, "localhost", sendPort);
     });
-
-    oscReceiver.bind(7001);
-
 
     // ---------- end OSC bridge  
 
@@ -77,7 +79,7 @@ function createWindow () {
 
     socket.on("control", incoming => {
       const msg = incoming.data;
-      oscSender.send(msg, 8001, 'localhost');
+      udpPort.send(msg, "localhost", 8001);
     });
 
     socket.on("chat-message", incoming => {
