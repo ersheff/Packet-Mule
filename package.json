@@ -10,7 +10,6 @@
     "start": "electron ."
   },
   "dependencies": {
-    "dgram": "^1.0.1",
     "osc": "^2.4.3",
     "socket.io-client": "^4.5.4"
   },
