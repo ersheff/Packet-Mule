@@ -50,6 +50,7 @@ window.pmc.onServerMessage((event, incoming) => {
 });
 
 window.pmc.onUserList((event, incoming) => {
+  userList.replaceChildren();
   for (user of incoming.users) {
     const newLine = document.createElement("li");
     newLine.innerText = user;
