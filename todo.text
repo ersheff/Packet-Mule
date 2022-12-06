@@ -1,0 +1,30 @@
+Configration
+- saved on client computer
+- create a default location?
+Information:
+1. program name (e.g. concert1, rave, etc)
+2. piece title (nickname for command))
+3. piece title (what to display)
+4. file name to open
+
+{
+  "program": {
+    "launch command": {
+      "display": "piece display name",
+      "file": "file to open"
+    }
+  }
+}
+
+{
+  "concert1": {
+    "piece1" : {
+      "display": "Dubious Toppings",
+      "file": "dubious-toppings.scd"
+    },
+    "piece2" : {
+      "display": "Dubious Toppings",
+      "file": "dubious-toppings.scd"
+    }
+  }
+}

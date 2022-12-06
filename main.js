@@ -1,9 +1,16 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Menu, ipcMain, shell } = require("electron");
+const { app, BrowserWindow, ipcMain, shell } = require("electron");
 const path = require("path");
+const fs = require("fs");
 const { io } = require("socket.io-client");
 
 const osc = require("osc");
+
+const pmConfigPath = "./pm-config.json" 
+
+const pmConfig = JSON.parse(fs.readFileSync(pmConfigPath));
+const programOrder = Object.keys(pmConfig["concert"]);
+
 
 // create browser window and load index.html
 function createWindow () {
@@ -16,7 +23,9 @@ function createWindow () {
   });
 
   ipcMain.on("connect", (event, username) => {
-    
+
+    mainWindow.webContents.send("program-order", programOrder);
+
     const socket = io("http://192.168.0.159:3000", {
       query: {
         username: username

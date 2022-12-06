@@ -19,7 +19,9 @@ const pmcAPI = {
 
   onUserList: (userList) => ipcRenderer.on("user-list", userList),
 
-  onConsoleLog: (message) => ipcRenderer.on("console-log", message)
+  onConsoleLog: (message) => ipcRenderer.on("console-log", message),
+
+  onProgramOrder: (programOrder) => ipcRenderer.on("program-order", programOrder)
 
 };
 

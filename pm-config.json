@@ -1,0 +1,12 @@
+{
+  "concert": {
+    "dubious" : {
+      "display": "Dubious Toppings",
+      "file": "dubious-toppings.scd"
+    },
+    "dihydrogen" : {
+      "display": "Dihydrogen Monoxide",
+      "file": "h20.maxpat"
+    }
+  }
+}

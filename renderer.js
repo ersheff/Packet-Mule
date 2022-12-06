@@ -2,8 +2,9 @@ const usernameInput = document.querySelector("#username-input");
 const connectButton = document.querySelector("#connect-button");
 const chatInput = document.querySelector("#chat-input");
 
-const userList = document.querySelector("#user-list");
 const pmConsole = document.querySelector("#pm-console");
+const userList = document.querySelector("#user-list");
+const programDisplay = document.querySelector("#program-display");
 
 
 // events that trigger main methods
@@ -51,9 +52,9 @@ window.pmc.onServerMessage((event, incoming) => {
 
 window.pmc.onUserList((event, incoming) => {
   userList.replaceChildren();
-  for (user of incoming.users) {
+  for (u of incoming.users) {
     const newLine = document.createElement("li");
-    newLine.innerText = user;
+    newLine.innerText = u;
     userList.appendChild(newLine);
   }
 });
@@ -62,7 +63,13 @@ window.pmc.onConsoleLog((event, message) => {
   console.log(message);
 });
 
-
+window.pmc.onProgramOrder((event, programOrder) => {
+  for (p of programOrder) {
+    const newLine = document.createElement("li");
+    newLine.innerText = p;
+    programDisplay.appendChild(newLine);
+  }
+});
 
 /*document.querySelector("#open-file").onclick = () => {
   console.log("launching the file...");
