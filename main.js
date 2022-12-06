@@ -15,7 +15,7 @@ const programOrder = Object.keys(pmConfig["concert"]);
 // create browser window and load index.html
 function createWindow () {
   const mainWindow = new BrowserWindow({
-    width: 800,
+    width: 600,
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js")
