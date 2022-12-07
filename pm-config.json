@@ -1,10 +1,10 @@
 {
-  "concert": {
-    "dubious" : {
+  "concert-name": {
+    "command-for-piece1" : {
       "display": "Dubious Toppings",
       "file": "dubious-toppings.scd"
     },
-    "dihydrogen" : {
+    "command-for-piece2" : {
       "display": "Dihydrogen Monoxide",
       "file": "h20.maxpat"
     }

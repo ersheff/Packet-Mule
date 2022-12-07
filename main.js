@@ -4,13 +4,15 @@ const path = require("path");
 const fs = require("fs");
 const { io } = require("socket.io-client");
 
-const osc = require("osc");
-
-const pmConfigPath = "./pm-config.json" 
-
+const homeDir = require('os').homedir();
+const pmPath = process.platform === "win32" 
+  ? `${homeDir}\\Documents\\PacketMule\\`
+  : `${homeDir}/Documents/PacketMule/`;
+const pmConfigPath = `${pmPath}pm-config.json`;
 const pmConfig = JSON.parse(fs.readFileSync(pmConfigPath));
 const programOrder = Object.keys(pmConfig["concert"]);
 
+const osc = require("osc");
 
 // create browser window and load index.html
 function createWindow () {
