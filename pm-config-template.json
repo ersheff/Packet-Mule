@@ -1,0 +1,12 @@
+{
+  "concert-name": {
+    "command-for-piece1" : {
+      "display": "Selection 1 Title",
+      "file": "file-to-launch.ext"
+    },
+    "command-for-piece2" : {
+      "display": "Selection 2 Title",
+      "file": "file-to-launch.ext"
+    }
+  }
+}

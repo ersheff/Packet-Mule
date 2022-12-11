@@ -9,8 +9,9 @@ const pmPath = process.platform === "win32"
   ? `${homeDir}\\Documents\\PacketMule\\`
   : `${homeDir}/Documents/PacketMule/`;
 const pmConfigPath = `${pmPath}pm-config.json`;
-const pmConfig = JSON.parse(fs.readFileSync(pmConfigPath));
-const programOrder = Object.keys(pmConfig["concert"]);
+
+const pmConfig = fs.existsSync(pmConfigPath) ? JSON.parse(fs.readFileSync(pmConfigPath)) : null;
+const programOrder = pmConfig ? Object.keys(pmConfig["concert"]) : null;
 
 const osc = require("osc");
 
@@ -34,7 +35,7 @@ function createWindow () {
       }
     });
 
-  // ----------
+    // ----------
     // OSC bridge
 
     const listenPort = 7001;
