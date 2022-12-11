@@ -51,14 +51,23 @@ function createWindow () {
     udpPort.on("message", (msg) => {
       const fullAddress = msg.address;
       const slashIndex = fullAddress.indexOf("/", 1);
-      const targetUsername = fullAddress.slice(1, slashIndex);
-      const shortAddress = fullAddress.slice(slashIndex);
-      msg.address = shortAddress;
-      const outgoing = {
-        target: targetUsername,
-        data: msg
+      if (slashIndex > 0) {
+        const targetUsername = fullAddress.slice(1, slashIndex);
+        const shortAddress = fullAddress.slice(slashIndex);
+        msg.address = shortAddress;
+        const outgoing = {
+          target: targetUsername,
+          data: msg
+        }
+        socket.emit("control", outgoing);
       }
-      socket.emit("control", outgoing);
+      else {
+        const message = {
+          sender: "OSC Bridge",
+          content: "Invalid OSC message format." 
+        };
+        mainWindow.webContents.send("server-message", message);
+      }
     });
 
     // ooen the socket
