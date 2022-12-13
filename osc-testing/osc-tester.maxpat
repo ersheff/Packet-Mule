@@ -57,8 +57,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 207.0, 120.5, 75.0, 22.0 ],
-					"text" : "/max-test $1"
+					"patching_rect" : [ 207.0, 120.5, 104.0, 22.0 ],
+					"text" : "/eric2/max-test $1"
 				}
 
 			}
