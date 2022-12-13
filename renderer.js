@@ -22,8 +22,8 @@ connectButton.addEventListener("click", () => {
   };
 });
 
-conductorCheck.addEventListener("change", (e) => {
-  console.log(e.target.checked);
+conductorCheck.addEventListener("click", () => {
+  window.pmc.requestConductor();
 });
 
 // chat-to-server listener
@@ -41,6 +41,23 @@ window.pmc.onConfirmUsername((event, incoming) => {
   usernameInput.placeholder = incoming.username;
   connectButton.disabled = true;
   conductorCheck.disabled = false;
+});
+
+window.pmc.onConfirmConductor((event, status) => {
+  if (status) {
+    conductorCheck.checked = true;
+    const newLine = document.createElement("li");
+    newLine.innerText = `server: you are now the conductor.`;
+    newLine.style.color = "red";
+    pmConsole.appendChild(newLine);
+  }
+  else {
+    conductorCheck.checked = false;
+    const newLine = document.createElement("li");
+    newLine.innerText = `server: conductor already claimed.`;
+    newLine.style.color = "red";
+    pmConsole.appendChild(newLine);
+  }
 });
 
 window.pmc.onChatMessage((event, incoming) => {

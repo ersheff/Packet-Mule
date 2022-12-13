@@ -88,6 +88,9 @@ function createWindow () {
 
     // ---------- end OSC bridge  
 
+    ipcMain.on("request-conductor", (event) => {
+      socket.emit("request-conductor");
+    });
 
     ipcMain.on("chat-message", (event, message) => {
       const outgoing = {
@@ -117,6 +120,10 @@ function createWindow () {
 
     socket.on("confirm-username", incoming => {
       mainWindow.webContents.send("confirm-username", incoming);
+    });
+
+    socket.on("confirm-conductor", (status) => {
+      mainWindow.webContents.send("confirm-conductor", status);
     });
 
     socket.on("user-list", incoming => {
