@@ -1,7 +1,8 @@
 const usernameInput = document.querySelector("#username-input");
 const connectButton = document.querySelector("#connect-button");
-const chatInput = document.querySelector("#chat-input");
+const conductorCheck = document.querySelector("#conductor-check");
 
+const chatInput = document.querySelector("#chat-input");
 const pmConsole = document.querySelector("#pm-console");
 const userList = document.querySelector("#user-list");
 const programDisplay = document.querySelector("#program-display");
@@ -21,6 +22,10 @@ connectButton.addEventListener("click", () => {
   };
 });
 
+conductorCheck.addEventListener("change", (e) => {
+  console.log(e.target.checked);
+});
+
 // chat-to-server listener
 chatInput.addEventListener("change", () => {
   window.pmc.chatMessage(chatInput.value);
@@ -35,6 +40,7 @@ window.pmc.onConfirmUsername((event, incoming) => {
   usernameInput.value = "";
   usernameInput.placeholder = incoming.username;
   connectButton.disabled = true;
+  conductorCheck.disabled = false;
 });
 
 window.pmc.onChatMessage((event, incoming) => {
