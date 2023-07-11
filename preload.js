@@ -1,32 +1,23 @@
-// preload (isolated world)
 const { contextBridge, ipcRenderer } = require("electron");
 
-const pmcAPI = {
+contextBridge.exposeInMainWorld("electronAPI", {
+
+  requestConnection: username => ipcRenderer.send("request-connection", username),
+
+  requestDisconnection: () => ipcRenderer.send("request-disconnection"),
+
+  outgoingChat: message => ipcRenderer.send("outgoing-chat", message),
+
+  confirmConnection: username => ipcRenderer.on("confirm-connection", username),
+
+  connectedUsers: connectedUsers => ipcRenderer.on("connected-users", connectedUsers),
+
+  serverMessage: message => ipcRenderer.on("server-message", message),
+
+  bridgeMessage: message => ipcRenderer.on("bridge-message", message),
+
+  incomingChat: message => ipcRenderer.on("incoming-chat", message),
+
+  oscDataFromApp: data => ipcRenderer.on("osc-data-from-app", data)
   
-  // event listeners (coming from renderer, going to main)
-  connect: username => ipcRenderer.send("connect", username),
-
-  requestConductor: () => ipcRenderer.send("request-conductor"),
-
-  chatMessage: message => ipcRenderer.send("chat-message", message),
-
-  launchFile: fileName => ipcRenderer.send("launch-file", fileName),
-
-  // event listeners (coming from main, going to renderer)
-  onConfirmUsername: username => ipcRenderer.on("confirm-username", username),
-
-  onConfirmConductor: (status) => ipcRenderer.on("confirm-conductor", status),
-  
-  onChatMessage: message => ipcRenderer.on("chat-message", message),
-
-  onServerMessage: message => ipcRenderer.on("server-message", message),
-
-  onUserList: userList => ipcRenderer.on("user-list", userList),
-
-  onConsoleLog: message => ipcRenderer.on("console-log", message),
-
-  onProgramOrder: programOrder => ipcRenderer.on("program-order", programOrder)
-
-};
-
-contextBridge.exposeInMainWorld("pmc", pmcAPI);
+});

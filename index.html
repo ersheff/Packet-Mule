@@ -3,34 +3,45 @@
   <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
-    <link href="./style.css" rel="stylesheet">
-    <script src="./renderer.js" defer></script>
-    <title>Packet Mule</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <link rel="stylesheet" href="./style.css">
+    <title>Packet Mule Client</title>
   </head>
-  
   <body>
 
-    <div>
-      <input type="text" id="username-input">
-      <button id="connect-button">Connect</button>
-      <label for="conductor-check">Conductor</label>
-      <input type="checkbox" id="conductor-check" disabled>
-    </div>
+    <main>
+      <div class="top-row">
+        <div class="connect-container">
+          <input type="text" placeholder="username" id="username-input">
+          <button id="connect-button" disabled>Connect</button>
+          <button id="disconnect-button" hidden>Disconnect</button>
+        </div>
+        <div class="osc-container">
+          <p>OSC thru:</p>
+          <p id="osc-thru-display"></p>
+        </div>
+      </div>
+  
+      <div class="bottom-row">
+  
+        <div class="users-container">
+          <p>Users:</p>
+          <div class="scrollable" id="user-list">
+          </div>
+        </div>
+  
+        <div class="console-container">
+          <p>Console:</p>
+          <div class="scrollable" id="client-console">
+          </div>
+          <input type="text" placeholder="chat" id="chat-input">
+        </div>
+  
+      </div>
+  
+    </main>
 
-    <div>
-      <input type="text" id="chat-input" placeholder="chat">
-    </div>
-    
-    <label for="pm-console">Console:</label>
-    <ul id="pm-console"></ul>
-
-    <label for="user-list">Users:</label>
-    <ul id="user-list"></ul>
-
-    <label for="program">Program:</label>
-    <ul id="program-display"></ul>
-
+    <!-- You can also require other files to run in this process -->
+    <script src="./renderer.js"></script>
   </body>
-
 </html>

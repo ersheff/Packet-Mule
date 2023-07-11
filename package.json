@@ -1,6 +1,6 @@
 {
-  "name": "helpful-hand-lighten-p7in9",
-  "productName": "helpful-hand-lighten-p7in9",
+  "name": "pm-electron",
+  "productName": "pm-electron",
   "description": "My Electron application description",
   "keywords": [],
   "main": "./main.js",
@@ -10,10 +10,10 @@
     "start": "electron ."
   },
   "dependencies": {
-    "osc": "^2.4.3",
-    "socket.io-client": "^4.5.4"
+    "osc": "2.4.4",
+    "socket.io-client": "4.6.1"
   },
   "devDependencies": {
-    "electron": "^21.3.1"
+    "electron": "25.2.0"
   }
 }

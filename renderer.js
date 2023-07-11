@@ -1,115 +1,98 @@
-const usernameInput = document.querySelector("#username-input");
-const connectButton = document.querySelector("#connect-button");
-const conductorCheck = document.querySelector("#conductor-check");
+const oscThruDisplay = document.getElementById("osc-thru-display");
 
-const chatInput = document.querySelector("#chat-input");
-const pmConsole = document.querySelector("#pm-console");
-const userList = document.querySelector("#user-list");
-const programDisplay = document.querySelector("#program-display");
+window.electronAPI.oscDataFromApp((event, data) => {
+    let fullData = "";
+    for(d of data.args) {
+        fullData += `${d.value} `;
+    }
+    const oscThruDisplayText = `${data.address} ${fullData}`;
+    oscThruDisplay.innerText = oscThruDisplayText;
+});
 
+//
+const usernameInput = document.getElementById("username-input");
 
-// events that trigger main methods
-// connect listener
+usernameInput.addEventListener("input", () => {
+    if (usernameInput.value.length > 0) {
+        connectButton.disabled = false;
+    } else connectButton.disabled = true;
+});
+
+const connectButton = document.getElementById("connect-button");
 
 connectButton.addEventListener("click", () => {
-  const username = usernameInput.value;
-  if (username) { window.pmc.connect(username); }
-  else {
-    const newLine = document.createElement("li");
-    newLine.innerText = "please provide a username before connecting";
+    window.electronAPI.requestConnection(usernameInput.value);
+});
+
+//
+const clientConsole = document.getElementById("client-console");
+
+window.electronAPI.serverMessage((event, message) => {
+    const newLine = document.createElement("p");
+    newLine.innerText = `Server: ${message}`;
     newLine.style.color = "red";
-    pmConsole.appendChild(newLine);
-  };
+    clientConsole.appendChild(newLine);
+    clientConsole.scrollTop = clientConsole.scrollHeight;
 });
 
-conductorCheck.addEventListener("click", () => {
-  window.pmc.requestConductor();
+window.electronAPI.bridgeMessage((event, message) => {
+    const newLine = document.createElement("p");
+    newLine.innerText = `OSC Bridge: ${message}`;
+    newLine.style.color = "red";
+    clientConsole.appendChild(newLine);
+    clientConsole.scrollTop = clientConsole.scrollHeight;
 });
 
-// chat-to-server listener
+const disconnectButton = document.getElementById("disconnect-button");
+
+window.electronAPI.confirmConnection((event, username) => {
+    usernameInput.value = "";
+    usernameInput.placeholder = username;
+    connectButton.hidden = true;
+    disconnectButton.hidden = false;
+});
+
+disconnectButton.addEventListener("click", () => {
+    window.electronAPI.requestDisconnection();
+    disconnectButton.hidden = true;
+    connectButton.hidden = false;
+    if (!usernameInput.value) {
+        connectButton.disabled = true;
+    }
+    usernameInput.placeholder = "username";
+    userList.replaceChildren();
+    const newLine = document.createElement("p");
+    newLine.innerText = "Disconnected";
+    newLine.style.color = "red";
+    clientConsole.appendChild(newLine);
+    clientConsole.scrollTop = clientConsole.scrollHeight;
+});
+
+//
+
+const userList = document.getElementById("user-list");
+
+window.electronAPI.connectedUsers((event, connectedUsers) => {
+    userList.replaceChildren();
+    for(u of connectedUsers) {
+        const userElement = document.createElement("p");
+        userElement.innerText = u;
+        userList.appendChild(userElement);
+    }
+});
+
+//
+
+const chatInput = document.getElementById("chat-input");
+
 chatInput.addEventListener("change", () => {
-  window.pmc.chatMessage(chatInput.value);
-  chatInput.value = "";
-  chatInput.placeholder = "chat";
-})
-
-
-// events that render content to window 
-
-window.pmc.onConfirmUsername((event, incoming) => {
-  usernameInput.value = "";
-  usernameInput.placeholder = incoming.username;
-  connectButton.disabled = true;
-  conductorCheck.disabled = false;
+    window.electronAPI.outgoingChat(chatInput.value);
+    chatInput.value = "";
 });
 
-window.pmc.onConfirmConductor((event, status) => {
-  if (status) {
-    conductorCheck.checked = true;
-    const newLine = document.createElement("li");
-    newLine.innerText = `server: you are now the conductor.`;
-    newLine.style.color = "red";
-    pmConsole.appendChild(newLine);
-  }
-  else {
-    conductorCheck.checked = false;
-    const newLine = document.createElement("li");
-    newLine.innerText = `server: conductor already claimed.`;
-    newLine.style.color = "red";
-    pmConsole.appendChild(newLine);
-  }
+window.electronAPI.incomingChat((event, message) => {
+    const newLine = document.createElement("p");
+    newLine.innerText = `${message.sender}: ${message.content}`;
+    clientConsole.appendChild(newLine);
+    clientConsole.scrollTop = clientConsole.scrollHeight;
 });
-
-window.pmc.onChatMessage((event, incoming) => {
-  const newLine = document.createElement("li");
-  newLine.innerText = `${incoming.sender}: ${incoming.content}`;
-  pmConsole.appendChild(newLine);
-});
-
-window.pmc.onServerMessage((event, incoming) => {
-  const newLine = document.createElement("li");
-  newLine.innerText = `${incoming.sender}: ${incoming.content}`;
-  newLine.style.color = "red";
-  pmConsole.appendChild(newLine);
-});
-
-window.pmc.onUserList((event, incoming) => {
-  userList.replaceChildren();
-  for (u of incoming.users) {
-    const newLine = document.createElement("li");
-    newLine.innerText = u;
-    userList.appendChild(newLine);
-  }
-});
-
-window.pmc.onConsoleLog((event, message) => {
-  console.log(message);
-});
-
-window.pmc.onProgramOrder((event, programOrder) => {
-  for (p of programOrder) {
-    const newLine = document.createElement("li");
-    newLine.innerText = p;
-    programDisplay.appendChild(newLine);
-  }
-});
-
-/*document.querySelector("#open-file").onclick = () => {
-  console.log("launching the file...");
-  let fName = "/Users/sheffie/Desktop/guitar-test1.maxpat";
-  window.pmc.launchFile(fName)
-    .then(() => {
-      const newLine = document.createElement("li");
-      newLine.innerText = "file opened";
-      document.querySelector("#pm-console").appendChild(newLine);
-    })
-}*/
-
-//document.querySelector("#username-input").addEventListener("change",
-//  function() {
-//    const newUsername = this.value;
-//    window.pmc.changeUsername(newUsername);
-//    this.value = "";
-//    this.placeholder = newUsername;
-//  }
-//)

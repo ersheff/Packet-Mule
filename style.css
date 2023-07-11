@@ -1,18 +1,91 @@
 * {
-  padding: 0;
-  margin: 0;
   box-sizing: border-box;
+  margin: 0;
 }
 
-body {
-  background-color: #110000;
-  color: #ff8080;
+html, body {
+  height: 100%;
 }
 
-ul {
-  list-style-type: none;
+main {
+  padding: 2ch;
+  background-color: #bbb;
 }
 
-li:nth-child(odd) {
-  background: #222;
+p {
+  margin: 0;
+}
+
+input {
+  width: 100%;
+}
+
+.top-row {
+  display: flex;
+  gap: 2ch;
+  align-items: center;
+  margin-bottom: 2ch;
+}
+
+.top-row > * {
+  background-color: #fff;
+  padding: 1em;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.connect-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1ch;
+  flex: 1;
+}
+
+.osc-container {
+  display: flex;
+  gap: 1ch;
+  flex: 2;
+}
+
+.bottom-row {
+  display: flex;
+  gap: 2ch;
+  height: 300px;
+}
+
+.bottom-row > * {
+  background-color: #fff;
+  padding: 1em;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.users-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1ch;
+  flex: 1;
+}
+
+.console-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1ch;
+  flex: 2;
+}
+
+.scrollable {
+  overflow-y: scroll;
+  background-color: #ddd;
+  border: 1px solid #bbb;
+  height: 100%;
+}
+
+.scrollable p {
+  padding: 0.2em 1ch;
+  border-bottom: 1px solid #bbb;
+}
+
+.scrollable p:nth-child(odd) {
+  background-color: #fff;
 }
