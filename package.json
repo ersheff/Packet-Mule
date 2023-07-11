@@ -1,6 +1,6 @@
 {
-  "name": "pm-electron",
-  "productName": "pm-electron",
+  "name": "packet-mule",
+  "productName": "packet-mule",
   "description": "My Electron application description",
   "keywords": [],
   "main": "./main.js",

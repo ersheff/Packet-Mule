@@ -62,8 +62,7 @@ disconnectButton.addEventListener("click", () => {
     usernameInput.placeholder = "username";
     userList.replaceChildren();
     const newLine = document.createElement("p");
-    newLine.innerText = "Disconnected";
-    newLine.style.color = "red";
+    newLine.innerText = "-- Disconnected --";
     clientConsole.appendChild(newLine);
     clientConsole.scrollTop = clientConsole.scrollHeight;
 });
