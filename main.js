@@ -21,6 +21,9 @@ function createWindow () {
         username: username
       }
     });
+
+    // https://packet-mule-miamioh.fly.dev
+    // http://localhost:3000
     
     const listenPort = 7000;
     const sendPort = 7001;
