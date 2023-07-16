@@ -16,7 +16,7 @@ function createWindow () {
   mainWindow.loadFile("index.html");
 
   ipcMain.on("request-connection", (event, username) => {
-    const socket = io("https://packet-mule-server.ue.r.appspot.com", {
+    const socket = io("http://localhost:3000", {
       query: {
         username: username
       }
