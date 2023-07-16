@@ -16,7 +16,7 @@ function createWindow () {
   mainWindow.loadFile("index.html");
 
   ipcMain.on("request-connection", (event, username) => {
-    const socket = io("http://localhost:3000", {
+    const socket = io("https://packet-mule-miamioh.fly.dev", {
       query: {
         username: username
       }
