@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 5,
-			"revision" : 4,
+			"revision" : 5,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -46,8 +46,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 315.0, 105.5, 172.0, 51.0 ],
-					"presentation_linecount" : 3,
+					"patching_rect" : [ 315.0, 105.5, 175.0, 51.0 ],
 					"text" : "outgoing osc addresses should start with /all/header or /username/header"
 				}
 
@@ -59,8 +58,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 533.0, 175.0, 259.0, 33.0 ],
-					"presentation_linecount" : 3,
+					"patching_rect" : [ 533.0, 175.0, 263.0, 33.0 ],
 					"text" : "The Packet Mule OSC Bridge sends messages coming from the server to apps on port 7001."
 				}
 
@@ -96,7 +94,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 41.0, 175.0, 213.0, 33.0 ],
+					"patching_rect" : [ 41.0, 175.0, 217.0, 33.0 ],
 					"text" : "The Packet Mule OSC Bridge accepts  messages from apps on port 7000."
 				}
 
