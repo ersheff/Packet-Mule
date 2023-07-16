@@ -62,7 +62,7 @@ function createWindow () {
     socket.on("data", message => {
       const fullAddress = `/${message.sender}${message.data.address}`;
       message.data.address = fullAddress;
-      udpPort.send(message, "localhost", sendPort);;
+      udpPort.send(data, "localhost", sendPort);;
     });
 
     socket.on("server-message", message => {
