@@ -16,14 +16,11 @@ function createWindow () {
   mainWindow.loadFile("index.html");
 
   ipcMain.on("request-connection", (event, username) => {
-    const socket = io("https://packet-mule-miamioh.fly.dev", {
+    const socket = io("https://packet-mule-miamioh.onrender.com", {
       query: {
         username: username
       }
     });
-
-    // https://packet-mule-miamioh.fly.dev
-    // http://localhost:3000
     
     const listenPort = 7000;
     const sendPort = 7001;
