@@ -13,19 +13,23 @@ document.addEventListener("DOMContentLoaded", () => {
     let xyz, lastXyz;
 
     if (typeof DeviceMotionEvent.requestPermission === "function") {
-      DeviceMotionEvent.requestPermission()
-        .then((permissionState) => {
-          if (permissionState === "granted") {
-            window.addEventListener("devicemotion", (event) => {
-              xyz = [
-                event.accelerationIncludingGravity.x,
-                event.accelerationIncludingGravity.y,
-                event.accelerationIncludingGravity.z,
-              ];
-            });
-          }
-        })
-        .catch(console.error);
+      document.body.innerHTML = `<button id="req-perm">Request permission</button>`;
+      document.getElementById("req-perm").addEventListener("click", () => {
+        DeviceMotionEvent.requestPermission()
+          .then((permissionState) => {
+            if (permissionState === "granted") {
+              window.addEventListener("devicemotion", (event) => {
+                xyz = [
+                  event.accelerationIncludingGravity.x,
+                  event.accelerationIncludingGravity.y,
+                  event.accelerationIncludingGravity.z,
+                ];
+                document.body.innerHTML = `<p>${xyz}</p>`;
+              });
+            }
+          })
+          .catch(console.error);
+      });
     } else {
       window.addEventListener("devicemotion", (event) => {
         xyz = [
@@ -33,10 +37,10 @@ document.addEventListener("DOMContentLoaded", () => {
           event.accelerationIncludingGravity.y,
           event.accelerationIncludingGravity.z,
         ];
+        document.body.innerHTML = `<p>${xyz}</p>`;
       });
     }
 
-    document.body.innerHTML = `<p>${xyz}</p>`;
     setInterval(() => {
       if (JSON.stringify(xyz) !== JSON.stringify(lastXyz)) {
         lastXyz = Array.from(xyz);
