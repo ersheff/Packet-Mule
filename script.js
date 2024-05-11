@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const socket = io();
 
   if (!window.max) {
-    let xyzabg, lastXyzabg;
+    let xyzabg,
+      lastXyzabg = [0, 0, 0, 0, 0, 0];
 
     if (typeof DeviceMotionEvent.requestPermission === "function") {
       document.body.innerHTML = `<button id="req-perm">Request permission</button>`;
@@ -27,9 +28,11 @@ document.addEventListener("DOMContentLoaded", () => {
                   event.rotationRate.beta,
                   event.rotationRate.gamma,
                 ];
-                xyzabg = lastXyzabg.map((v, i) => v * 0.85 + newXyzabg[i] * 0.15);
+                xyzabg = lastXyzabg.map(
+                  (v, i) => v * 0.85 + newXyzabg[i] * 0.15
+                );
                 lastXyzabg = xyzabg;
-                document.body.inerHTML = `
+                document.body.innerHTML = `
                 <p>Accelerometer:</p>
                 <p>x: ${xyzabg[0].toFixed(2)}</p>
                 <p>x: ${xyzabg[1].toFixed(2)}</p>
