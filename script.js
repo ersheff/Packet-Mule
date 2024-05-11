@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!window.max) {
     let xyzabg,
+      sentXyzabg,
       lastXyzabg = [0, 0, 0, 0, 0, 0];
 
     if (typeof DeviceMotionEvent.requestPermission === "function") {
@@ -71,9 +72,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     setInterval(() => {
-      if (JSON.stringify(xyzabg) !== JSON.stringify(lastXyzabg)) {
-        lastXyzabg = Array.from(xyzabg);
-        socket.emit("phone", { target: phone, data: xyzabg });
+      if (JSON.stringify(sentXyzabg) !== JSON.stringify(xyzabg)) {
+        sentXyzabg = Array.from(xyzabg);
+        socket.emit("phone", { target: phone, data: sentXyzabg });
       }
     }, 50);
     return;
