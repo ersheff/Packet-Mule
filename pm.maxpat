@@ -40,16 +40,70 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-6",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1175.0, 209.0, 46.0, 22.0 ],
+					"text" : "pack i i"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1105.0, 240.0, 101.0, 22.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 1047.0, 134.0, 101.0, 22.0 ],
+					"text" : "prepend pm erics"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 351.0, 116.0, 88.0, 22.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 377.0, 56.0, 88.0, 22.0 ],
+					"text" : "prepend pm all"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-1",
+					"maxclass" : "pictslider",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "int", "int" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 1175.0, 92.0, 100.0, 100.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 1105.0, 32.0, 100.0, 100.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-149",
-					"linecount" : 8,
+					"linecount" : 7,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 369.5, 177.0, 150.0, 114.0 ],
+					"patching_rect" : [ 369.5, 177.0, 152.0, 100.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 5,
-					"presentation_rect" : [ 377.0, 230.0, 282.0, 74.0 ],
-					"text" : "assuming that you use the uesername \"ethanc\" here in jweb, go to  \"https://packet-mule.onrender.com/?phone=ethanc\" on your phone to send phone sensor data to this patch"
+					"presentation_rect" : [ 377.0, 230.0, 285.0, 74.0 ],
+					"text" : "assuming that you use the uesername \"erics\" here in jweb, go to  \"https://packet-mule.onrender.com/?phone=erics\" on your phone to send phone sensor data to this patch"
 				}
 
 			}
@@ -60,10 +114,10 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 369.5, 310.0, 150.0, 60.0 ],
+					"patching_rect" : [ 369.5, 310.0, 151.0, 60.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 4,
-					"presentation_rect" : [ 377.0, 332.0, 150.0, 60.0 ],
+					"presentation_rect" : [ 377.0, 332.0, 151.0, 60.0 ],
 					"text" : "incoming messages start either with the sender's username or \"phone\" if it's from your phone"
 				}
 
@@ -116,10 +170,10 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1188.0, 125.5, 150.0, 47.0 ],
+					"patching_rect" : [ 1105.0, 279.0, 150.0, 47.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
-					"presentation_rect" : [ 1047.0, 81.0, 185.0, 33.0 ],
+					"presentation_rect" : [ 1047.0, 158.0, 185.0, 33.0 ],
 					"text" : "messages starting with \"pm username\" go only to that person"
 				}
 
@@ -131,10 +185,10 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 410.0, 131.0, 150.0, 33.0 ],
+					"patching_rect" : [ 441.0, 116.0, 150.0, 33.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
-					"presentation_rect" : [ 377.0, 81.0, 150.0, 33.0 ],
+					"presentation_rect" : [ 377.0, 80.0, 150.0, 33.0 ],
 					"text" : "messages starting with \"pm all\" go to everyone"
 				}
 
@@ -155,20 +209,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-139",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 351.0, 131.0, 57.0, 22.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 377.0, 57.0, 57.0, 22.0 ],
-					"text" : "pm all $1"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-136",
 					"maxclass" : "number",
 					"numinlets" : 1,
@@ -178,20 +218,6 @@
 					"patching_rect" : [ 1105.0, 92.0, 50.0, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 1047.0, 32.0, 50.0, 22.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-137",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 1105.0, 125.0, 81.0, 22.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 1047.0, 57.0, 81.0, 22.0 ],
-					"text" : "pm ethanc $1"
 				}
 
 			}
@@ -218,7 +244,7 @@
 					"patching_rect" : [ 34.0, 371.0, 333.5, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 15.0, 394.0, 360.0, 22.0 ],
-					"text" : "title Document"
+					"text" : "ethanc 361"
 				}
 
 			}
@@ -232,7 +258,7 @@
 					"patching_rect" : [ 769.5, 357.0, 333.5, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 685.0, 394.0, 360.0, 22.0 ],
-					"text" : "chat \" bfjewkbfkew\""
+					"text" : "title Document"
 				}
 
 			}
@@ -2269,6 +2295,20 @@
  ],
 		"lines" : [ 			{
 				"patchline" : 				{
+					"destination" : [ "obj-6", 1 ],
+					"source" : [ "obj-1", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-77", 0 ],
 					"source" : [ "obj-102", 0 ]
 				}
@@ -2318,29 +2358,15 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-137", 0 ],
+					"destination" : [ "obj-4", 0 ],
 					"source" : [ "obj-136", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-122", 0 ],
-					"source" : [ "obj-137", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-139", 0 ],
+					"destination" : [ "obj-2", 0 ],
 					"source" : [ "obj-138", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-3", 0 ],
-					"source" : [ "obj-139", 0 ]
 				}
 
 			}
@@ -2355,6 +2381,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-122", 0 ],
 					"source" : [ "obj-145", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"source" : [ "obj-2", 0 ]
 				}
 
 			}
@@ -2450,8 +2483,22 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-122", 0 ],
+					"source" : [ "obj-4", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-3", 0 ],
 					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"source" : [ "obj-6", 0 ]
 				}
 
 			}
