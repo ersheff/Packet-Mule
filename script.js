@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const socket = io();
 
   if (!window.max) {
-    let xyz, lastXyz;
+    let xyzabg, lastXyzabg;
 
     if (typeof DeviceMotionEvent.requestPermission === "function") {
       document.body.innerHTML = `<button id="req-perm">Request permission</button>`;
@@ -19,12 +19,23 @@ document.addEventListener("DOMContentLoaded", () => {
           .then((permissionState) => {
             if (permissionState === "granted") {
               window.addEventListener("devicemotion", (event) => {
-                xyz = [
+                xyzabg = [
                   event.accelerationIncludingGravity.x,
                   event.accelerationIncludingGravity.y,
                   event.accelerationIncludingGravity.z,
+                  event.rotationRate.alpha,
+                  event.rotationRate.beta,
+                  event.rotationRate.gamma,
                 ];
-                document.body.innerHTML = `<p>${xyz}</p>`;
+                document.body.innerHTML = `
+                <p>Accelerometer:</p>
+                <p>x: ${xyzabg[0].toFixed(2)}</p>
+                <p>x: ${xyzabg[1].toFixed(2)}</p>
+                <p>x: ${xyzabg[2].toFixed(2)}</p>
+                <p>Gyro:</p>
+                <p>alpha: ${xyzabg[3].toFixed(2)}</p>
+                <p>beta: ${xyzabg[4].toFixed(2)}</p>
+                <p>gamma: ${xyzabg[5].toFixed(2)}</p>`;
               });
             }
           })
@@ -32,19 +43,30 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     } else {
       window.addEventListener("devicemotion", (event) => {
-        xyz = [
+        xyzabg = [
           event.accelerationIncludingGravity.x,
           event.accelerationIncludingGravity.y,
           event.accelerationIncludingGravity.z,
+          event.rotationRate.alpha,
+          event.rotationRate.beta,
+          event.rotationRate.gamma,
         ];
-        document.body.innerHTML = `<p>${xyz}</p>`;
+        document.body.innerHTML = `
+        <p>Accelerometer:</p>
+        <p>x: ${xyzabg[0].toFixed(2)}</p>
+        <p>x: ${xyzabg[1].toFixed(2)}</p>
+        <p>x: ${xyzabg[2].toFixed(2)}</p>
+        <p>Gyro:</p>
+        <p>alpha: ${xyzabg[3].toFixed(2)}</p>
+        <p>beta: ${xyzabg[4].toFixed(2)}</p>
+        <p>gamma: ${xyzabg[5].toFixed(2)}</p>`;
       });
     }
 
     setInterval(() => {
-      if (JSON.stringify(xyz) !== JSON.stringify(lastXyz)) {
-        lastXyz = Array.from(xyz);
-        socket.emit("phone", { target: phone, data: xyz });
+      if (JSON.stringify(xyzabg) !== JSON.stringify(lastXyzabg)) {
+        lastXyzabg = Array.from(xyzabg);
+        socket.emit("phone", { target: phone, data: xyzabg });
       }
     }, 1000);
     return;
