@@ -49,7 +49,7 @@ export function handlePhone(socket, phone) {
   }
 
   setInterval(() => {
-    xyzabg = [...xyz, ...abg];
+    xyzabg = [...xyz, ...abg.map((rad) => rad * 180 / Math.PI)];
     if (JSON.stringify(sentXyzabg) !== JSON.stringify(xyzabg)) {
       sentXyzabg = Array.from(xyzabg);
       socket.emit("phone", { target: phone, data: sentXyzabg });
@@ -73,7 +73,7 @@ function handleMotion(event, xyz, lastXyz) {
 }
 
 function handleOrientation(event, abg, lastAbg) {
-  const newAbg = [event.alpha, event.beta, event.gamma];
+  const newAbg = [event.alpha, event.beta, event.gamma].map(deg => deg * Math.PI / 180);;
   abg = lastAbg.map((v, i) => v * 0.85 + newAbg[i] * 0.15);
   lastAbg = abg;
   document.getElementById("gyro-data").innerHTML = `
