@@ -1,47 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <link rel="stylesheet" href="./style.css">
-    <title>Packet Mule Client</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js" defer></script>
+    <title>Document</title>
   </head>
   <body>
-
-    <main>
-      <div class="top-row">
-        <div class="connect-container">
-          <input type="text" placeholder="username" id="username-input">
-          <button id="connect-button" disabled>Connect</button>
-          <button id="disconnect-button" hidden>Disconnect</button>
-        </div>
-        <div class="osc-container">
-          <p>OSC thru:</p>
-          <p id="osc-thru-display"></p>
-        </div>
-      </div>
-  
-      <div class="bottom-row">
-  
-        <div class="users-container">
-          <p>Users:</p>
-          <div class="scrollable" id="user-list">
-          </div>
-        </div>
-  
-        <div class="console-container">
-          <p>Console:</p>
-          <div class="scrollable" id="client-console">
-          </div>
-          <input type="text" placeholder="chat" id="chat-input">
-        </div>
-  
-      </div>
-  
-    </main>
-
-    <!-- You can also require other files to run in this process -->
-    <script src="./renderer.js"></script>
+    <dialog>
+      <form method="dialog">
+        <input type="text" id="username-input" placeholder="enter username" />
+      </form>
+    </dialog>
   </body>
 </html>

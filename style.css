@@ -1,91 +1,29 @@
 * {
   box-sizing: border-box;
-  margin: 0;
+  font-size: 0.9rem;
 }
 
-html, body {
-  height: 100%;
-}
-
-main {
-  padding: 2ch;
-  background-color: #bbb;
-}
-
-p {
-  margin: 0;
-}
-
-input {
-  width: 100%;
-}
-
-.top-row {
-  display: flex;
-  gap: 2ch;
-  align-items: center;
-  margin-bottom: 2ch;
-}
-
-.top-row > * {
-  background-color: #fff;
-  padding: 1em;
-  border-radius: 4px;
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-}
-
-.connect-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 1ch;
-  flex: 1;
-}
-
-.osc-container {
-  display: flex;
-  gap: 1ch;
-  flex: 2;
-}
-
-.bottom-row {
-  display: flex;
-  gap: 2ch;
-  height: 300px;
-}
-
-.bottom-row > * {
-  background-color: #fff;
-  padding: 1em;
-  border-radius: 4px;
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-}
-
-.users-container {
+.max-window {
   display: flex;
   flex-direction: column;
-  gap: 1ch;
-  flex: 1;
+  height: 100vh;
 }
 
-.console-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1ch;
-  flex: 2;
+#chat-output {
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
-.scrollable {
-  overflow-y: scroll;
-  background-color: #ddd;
-  border: 1px solid #bbb;
-  height: 100%;
+#chat-output p {
+  margin: 0;
+  padding: 0.5rem;
 }
 
-.scrollable p {
-  padding: 0.2em 1ch;
-  border-bottom: 1px solid #bbb;
+#chat-output p:nth-child(odd) {
+  background-color: #202632;
 }
 
-.scrollable p:nth-child(odd) {
-  background-color: #fff;
+#chat-input {
+  flex-shrink: 0;
+  margin: 0.2rem 0;
 }

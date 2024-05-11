@@ -1,19 +1,18 @@
 {
-  "name": "packet-mule",
-  "productName": "packet-mule",
-  "description": "My Electron application description",
-  "keywords": [],
-  "main": "./main.js",
+  "name": "packetmule",
   "version": "1.0.0",
-  "author": "sheffie",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "start": "electron ."
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "osc": "2.4.4",
-    "socket.io-client": "4.6.1"
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
   },
-  "devDependencies": {
-    "electron": "25.3.0"
-  }
+  "devDependencies": {},
+  "description": ""
 }
