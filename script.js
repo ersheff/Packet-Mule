@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   socket.on("phone", (incoming) => {
-    window.max.outlet("phone", incoming);
+    const msg = ["phone", ...incoming.data];
+    window.max.outlet(msg);
   });
 });
