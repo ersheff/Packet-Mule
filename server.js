@@ -20,9 +20,9 @@ io.on("connection", (socket) => {
       socket.emit("username", { success: false });
       return;
     }
-    socket.emit("username", { success: true });
     users[username] = socket.id;
     socket.data.username = username;
+    socket.emit("username", { success: true, username: socket.data.username });
   });
 
   // handle data from max
