@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .then((permissionState) => {
             if (permissionState === "granted") {
               window.addEventListener("devicemotion", (event) => {
-                xyzabg = [
+                const newXyzabg = [
                   event.accelerationIncludingGravity.x,
                   event.accelerationIncludingGravity.y,
                   event.accelerationIncludingGravity.z,
@@ -27,7 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   event.rotationRate.beta,
                   event.rotationRate.gamma,
                 ];
-                document.body.innerHTML = `
+                xyzabg = lastXyzabg.map((v, i) => v * 0.85 + newXyzabg[i] * 0.15);
+                lastXyzabg = xyzabg;
+                document.body.inerHTML = `
                 <p>Accelerometer:</p>
                 <p>x: ${xyzabg[0].toFixed(2)}</p>
                 <p>x: ${xyzabg[1].toFixed(2)}</p>
@@ -43,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     } else {
       window.addEventListener("devicemotion", (event) => {
-        xyzabg = [
+        const newXyzabg = [
           event.accelerationIncludingGravity.x,
           event.accelerationIncludingGravity.y,
           event.accelerationIncludingGravity.z,
@@ -51,6 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
           event.rotationRate.beta,
           event.rotationRate.gamma,
         ];
+        xyzabg = lastXyzabg.map((v, i) => v * 0.85 + newXyzabg[i] * 0.15);
+        lastXyzabg = xyzabg;
         document.body.innerHTML = `
         <p>Accelerometer:</p>
         <p>x: ${xyzabg[0].toFixed(2)}</p>
@@ -68,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
         lastXyzabg = Array.from(xyzabg);
         socket.emit("phone", { target: phone, data: xyzabg });
       }
-    }, 1000);
+    }, 50);
     return;
   }
 
@@ -119,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
       socket.emit("pm", outgoing);
     }
-  }, 1000);
+  }, 50);
 
   socket.on("pm", (incoming) => {
     const msg = [incoming.sender, ...incoming.data];
