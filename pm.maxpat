@@ -40,13 +40,69 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-18",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 700.0, 680.0, 27.0, 20.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 652.0, 560.0, 27.0, 20.0 ],
+					"text" : "2"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-17",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 666.0, 680.0, 27.0, 20.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 630.0, 560.0, 27.0, 20.0 ],
+					"text" : "1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-10",
+					"maxclass" : "slider",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 700.0, 538.0, 20.0, 140.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 652.0, 418.0, 20.0, 140.0 ],
+					"size" : 101.0
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-7",
+					"maxclass" : "slider",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 666.0, 538.0, 20.0, 140.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 630.0, 418.0, 20.0, 140.0 ],
+					"size" : 101.0
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-16",
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 503.0, 668.0, 150.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 504.0, 550.0, 150.0, 20.0 ],
+					"presentation_rect" : [ 15.0, 594.0, 124.0, 20.0 ],
 					"text" : "phone stuff"
 				}
 
@@ -883,7 +939,7 @@
 					"patching_rect" : [ 350.0, 164.0, 351.0, 47.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 6,
-					"presentation_rect" : [ 377.0, 243.0, 201.0, 87.0 ],
+					"presentation_rect" : [ 377.0, 243.0, 208.0, 87.0 ],
 					"text" : "assuming that you use the username \"mule\" here in jweb, go to  \"https://packet-mule.onrender.com/?pass=mule152&phone=mule\" on your phone to send phone sensor data to this patch"
 				}
 
@@ -1025,7 +1081,7 @@
 					"patching_rect" : [ 34.0, 371.0, 333.5, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 15.0, 394.0, 360.0, 22.0 ],
-					"text" : "chat cewcew"
+					"text" : "title \"Packet Mule\""
 				}
 
 			}
@@ -1039,7 +1095,7 @@
 					"patching_rect" : [ 769.5, 357.0, 333.5, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 744.0, 394.0, 360.0, 22.0 ],
-					"text" : "chat cecw"
+					"text" : "title \"Packet Mule\""
 				}
 
 			}
@@ -1115,7 +1171,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 607.0, 580.0, 50.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 658.0, 460.0, 50.0, 20.0 ],
+					"presentation_rect" : [ 588.0, 460.0, 40.0, 20.0 ],
 					"text" : "roll"
 				}
 
@@ -1128,7 +1184,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 555.0, 580.0, 50.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 581.0, 460.0, 50.0, 20.0 ],
+					"presentation_rect" : [ 546.0, 460.0, 50.0, 20.0 ],
 					"text" : "pitch"
 				}
 
@@ -1154,7 +1210,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 503.0, 602.0, 150.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 504.0, 482.0, 150.0, 20.0 ],
+					"presentation_rect" : [ 504.0, 482.0, 124.0, 20.0 ],
 					"text" : "orientation (0-360)"
 				}
 
@@ -1169,7 +1225,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 607.0, 538.0, 40.0, 40.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 658.0, 418.0, 40.0, 40.0 ],
+					"presentation_rect" : [ 588.0, 418.0, 40.0, 40.0 ],
 					"size" : 360.0
 				}
 
@@ -1184,7 +1240,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 555.0, 538.0, 40.0, 40.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 581.0, 418.0, 40.0, 40.0 ],
+					"presentation_rect" : [ 546.0, 418.0, 40.0, 40.0 ],
 					"size" : 360.0
 				}
 
@@ -1261,10 +1317,10 @@
 					"id" : "obj-23",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 6,
-					"outlettype" : [ "float", "float", "float", "float", "float", "float" ],
-					"patching_rect" : [ 14.0, 429.0, 834.0, 22.0 ],
-					"text" : "unpack f f f f f f"
+					"numoutlets" : 8,
+					"outlettype" : [ "float", "float", "float", "float", "float", "float", "float", "float" ],
+					"patching_rect" : [ 14.0, 429.0, 705.0, 22.0 ],
+					"text" : "unpack f f f f f f f f"
 				}
 
 			}
@@ -1463,6 +1519,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-10", 0 ],
+					"source" : [ "obj-23", 7 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-30", 0 ],
 					"source" : [ "obj-23", 3 ]
 				}
@@ -1479,6 +1542,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-36", 0 ],
 					"source" : [ "obj-23", 5 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-7", 0 ],
+					"source" : [ "obj-23", 6 ]
 				}
 
 			}

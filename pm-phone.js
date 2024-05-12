@@ -57,10 +57,10 @@ export function handlePhone(socket, phone) {
   }
 
   document.querySelector("#slider1").addEventListener("input", (e) => {
-    sliderVals[0] = e.target.value;
+    sliderVals[0] = +e.target.value;
   });
   document.querySelector("#slider2").addEventListener("input", (e) => {
-    sliderVals[1] = e.target.value;
+    sliderVals[1] = +e.target.value;
   });
 
   setInterval(() => {
