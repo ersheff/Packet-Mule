@@ -3,6 +3,10 @@ export function handlePhone(socket, phone) {
   let lastXyz = [0, 0, 0];
   const sliderVals = [0, 0];
 
+  document
+    .querySelector("html")
+    .style.setProperty("overscroll-behavior", "none");
+
   document.body.innerHTML =
     /* HTML */
     ` <div class="phone-window">
