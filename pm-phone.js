@@ -11,9 +11,9 @@ export function handlePhone(socket, phone) {
         <input type="range" id="slider2" />
       </div>
       <div>
-        <p>Accelerometer:</p>
+        <p>Accelerometer</p>
         <div id="accel-data"></div>
-        <p>Gyro:</p>
+        <p>Gyro</p>
         <div id="gyro-data"></div>
       </div>
     </div>`;
