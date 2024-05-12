@@ -46,7 +46,6 @@ function setupInterface(socket, username) {
     </div>`;
 
   document.querySelector("#chat-input").addEventListener("change", (e) => {
-    window.max.outlet("chat", e.target.value);
     socket.emit("chat", e.target.value);
     e.target.value = "";
   });
