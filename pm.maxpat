@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 59.0, 81.0, 1340.0, 716.0 ],
+		"rect" : [ 59.0, 81.0, 1270.0, 601.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -1274,7 +1274,7 @@
 					"patching_rect" : [ 34.0, 371.0, 333.5, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 10.0, 323.0, 360.0, 22.0 ],
-					"text" : "title \"Packet Mule\""
+					"text" : "chat Eric"
 				}
 
 			}
