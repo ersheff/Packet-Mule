@@ -58,22 +58,22 @@ function handleMotion(event, xyz, lastXyz) {
   const newXyz = [
     event.accelerationIncludingGravity.x,
     event.accelerationIncludingGravity.y,
-    event.accelerationIncludingGravity.z,
+    event.accelerationIncludingGravity.z
   ];
   xyz = lastXyz.map((v, i) => v * 0.85 + newXyz[i] * 0.15);
   lastXyz = xyz;
-  document.getElementById("accel-data").innerHTML = `
+  document.querySelector("#accel-data").innerHTML = `
     <p>x: ${xyz[0].toFixed(2)}</p>
-    <p>x: ${xyz[1].toFixed(2)}</p>
-    <p>x: ${xyz[2].toFixed(2)}</p>`;
+    <p>y: ${xyz[1].toFixed(2)}</p>
+    <p>z: ${xyz[2].toFixed(2)}</p>`;
   return [xyz, lastXyz];
 }
 
 function handleOrientation(event) {
   const abg = [event.alpha, event.beta, event.gamma];
-  document.getElementById("gyro-data").innerHTML = `
-    <p>x: ${abg[0].toFixed(2)}</p>
-    <p>x: ${abg[1].toFixed(2)}</p>
-    <p>x: ${abg[2].toFixed(2)}</p>`;
+  document.querySelector("#gyro-data").innerHTML = `
+    <p>yaw: ${abg[0].toFixed(2)}</p>
+    <p>pitch: ${abg[1].toFixed(2)}</p>
+    <p>roll: ${abg[2].toFixed(2)}</p>`;
   return abg;
 }

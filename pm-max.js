@@ -1,4 +1,11 @@
 export function handleMax(socket, max) {
+  socket.on("auth", (response) => {
+    if (!response.success) {
+      document.body.innerHTML = `<h1 style="text-align: center;">What's the password?</h1>`;
+      return;
+    }
+  });
+
   usernameMethod(socket, max);
 
   socket.on("username", (response) => {
@@ -9,9 +16,10 @@ export function handleMax(socket, max) {
       return;
     }
 
-    document.getElementById("username-input").value = "";
-    document.getElementById("username-input").placeholder =
-      "try another username";
+    const usernameInput = document.querySelector("#username-input");
+    usernameInput.value = "";
+    usernameInput.placeholder = "try another username";
+
     document.querySelector("dialog").showModal();
   });
 }
@@ -21,7 +29,7 @@ export function handleMax(socket, max) {
 function usernameMethod(socket, max) {
   document.querySelector("form").addEventListener("submit", (e) => {
     e.preventDefault();
-    socket.emit("username", document.getElementById("username-input").value);
+    socket.emit("username", document.querySelector("#username-input").value);
   });
 
   if (!max) {
@@ -43,7 +51,7 @@ function setupInterface(socket, username) {
       <input type="text" id="chat-input" placeholder="chat: ${username}">
     </div>`;
 
-  document.getElementById("chat-input").addEventListener("change", (e) => {
+  document.querySelector("#chat-input").addEventListener("change", (e) => {
     window.max.outlet("chat", e.target.value);
     socket.emit("chat", e.target.value);
     e.target.value = "";
@@ -54,14 +62,16 @@ function setupInterface(socket, username) {
 
 function setupListeners(socket) {
   socket.on("chat", (incoming) => {
-    const chatOutput = document.getElementById("chat-output");
+    const chatOutput = document.querySelector("#chat-output");
     chatOutput.innerHTML += incoming;
     chatOutput.scrollTop = chatOutput.scrollHeight;
   });
 
   socket.on("pm", (incoming) => {
-    const msg = [incoming.sender, ...incoming.data];
-    window.max.outlet(...msg);
+    for (const packet of incoming) {
+      const msg = [packet.sender, packet.header, ...packet.data];
+      window.max.outlet(...msg);
+    }
   });
 
   socket.on("phone", (incoming) => {
@@ -73,21 +83,21 @@ function setupListeners(socket) {
 //
 
 function setupEmitter(socket) {
-  let args, lastArgs;
+  let payload = {};
 
   window.max.bindInlet("pm", function () {
-    args = Array.from(arguments);
+    const args = Array.from(arguments);
+    const [target, header, ...data] = args;
+    const key = `${target}/${header}`;
+    const packet = { target, header, data };
+    payload[key] = packet;
   });
 
   setInterval(() => {
-    if (JSON.stringify(args) !== JSON.stringify(lastArgs)) {
-      lastArgs = Array.from(args);
-      const target = args[0];
-      const outgoing = {
-        target: target,
-        data: args.slice(1),
-      };
+    if (Object.keys(payload).length > 0) {
+      const outgoing = Object.values(payload);
       socket.emit("pm", outgoing);
+      payload = {};
     }
   }, 50);
 }
