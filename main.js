@@ -14,10 +14,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const socket = io({ auth: { token: pass } });
 
-  if (!window.max) {
-    handlePhone(socket, phone);
-    return;
-  }
+  socket.on("auth", (response) => {
+    if (!response.success) {
+      document.body.innerHTML = `<h1 style="text-align: center;">What's the password?</h1>`;
+      return;
+    }
 
-  handleMax(socket, max);
+    if (!window.max) {
+      handlePhone(socket, phone);
+      return;
+    }
+
+    document.body.innerHTML =
+      /* HTML */
+      `<dialog>
+        <form method="dialog">
+          <input type="text" id="username-input" placeholder="enter username" />
+        </form>
+      </dialog>`;
+    handleMax(socket, max);
+  });
 });

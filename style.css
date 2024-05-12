@@ -9,6 +9,26 @@
   height: 100vh;
 }
 
+.phone-window {
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: flex-end;
+  align-items: center;
+
+  & * {
+    font-size: 1.5rem;
+  }
+}
+
+.slider-container {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
 #chat-output {
   flex-grow: 1;
   overflow-y: auto;

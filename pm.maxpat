@@ -12,7 +12,7 @@
 		"classnamespace" : "box",
 		"rect" : [ 59.0, 81.0, 1340.0, 716.0 ],
 		"bglocked" : 0,
-		"openinpresentation" : 0,
+		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
 		"default_fontface" : 0,
 		"default_fontname" : "Arial",
@@ -39,6 +39,104 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-16",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 503.0, 668.0, 150.0, 20.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 504.0, 550.0, 150.0, 20.0 ],
+					"text" : "phone stuff"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-15",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 976.5, 554.5, 150.0, 20.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 1034.0, 495.0, 209.0, 20.0 ],
+					"text" : "try loading with password"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-14",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 769.5, 541.5, 150.0, 33.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 947.0, 471.0, 209.0, 20.0 ],
+					"text" : "try loading without password"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-12",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 976.5, 578.0, 288.0, 22.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 744.0, 494.0, 288.0, 22.0 ],
+					"text" : "url https://packet-mule.onrender.com?pass=mule152"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-11",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 769.5, 578.0, 203.0, 22.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 744.0, 470.0, 203.0, 22.0 ],
+					"text" : "url https://packet-mule.onrender.com"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-9",
+					"maxclass" : "jweb",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 769.5, 627.0, 335.0, 234.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 744.0, 518.0, 360.0, 120.0 ],
+					"rendermode" : 0,
+					"url" : "https://packet-mule.onrender.com?pass=mule152"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-8",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 769.5, 470.0, 351.0, 33.0 ],
+					"presentation" : 1,
+					"presentation_linecount" : 3,
+					"presentation_rect" : [ 744.0, 435.0, 316.0, 47.0 ],
+					"text" : "a simple authentication occurs by adding \"pass\" as a url query parameter, e.g. ?pass=mule152 to the end of the url"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-80",
 					"maxclass" : "newobj",
@@ -782,11 +880,11 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 350.0, 164.0, 346.0, 47.0 ],
+					"patching_rect" : [ 350.0, 164.0, 351.0, 47.0 ],
 					"presentation" : 1,
-					"presentation_linecount" : 3,
-					"presentation_rect" : [ 377.0, 230.0, 346.0, 47.0 ],
-					"text" : "assuming that you use the username \"mule\" here in jweb, go to  \"https://packet-mule.onrender.com/?phone=mule\" on your phone to send phone sensor data to this patch"
+					"presentation_linecount" : 6,
+					"presentation_rect" : [ 377.0, 243.0, 201.0, 87.0 ],
+					"text" : "assuming that you use the username \"mule\" here in jweb, go to  \"https://packet-mule.onrender.com/?pass=mule152&phone=mule\" on your phone to send phone sensor data to this patch"
 				}
 
 			}
@@ -825,7 +923,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 973.0, 57.0, 42.0, 22.0 ],
+					"patching_rect" : [ 1061.0, 57.0, 42.0, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 1062.0, 9.0, 42.0, 22.0 ],
 					"text" : "reload"
@@ -839,7 +937,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 219.0, 57.0, 42.0, 22.0 ],
+					"patching_rect" : [ 307.0, 57.0, 42.0, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 333.0, 8.0, 42.0, 22.0 ],
 					"text" : "reload"
@@ -927,7 +1025,7 @@
 					"patching_rect" : [ 34.0, 371.0, 333.5, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 15.0, 394.0, 360.0, 22.0 ],
-					"text" : "bob 58 28"
+					"text" : "chat cewcew"
 				}
 
 			}
@@ -941,7 +1039,7 @@
 					"patching_rect" : [ 769.5, 357.0, 333.5, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 744.0, 394.0, 360.0, 22.0 ],
-					"text" : "chat Hi"
+					"text" : "chat cecw"
 				}
 
 			}
@@ -977,8 +1075,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 768.0, 57.0, 203.0, 22.0 ],
-					"text" : "url https://packet-mule.onrender.com"
+					"patching_rect" : [ 768.0, 57.0, 346.0, 22.0 ],
+					"text" : "url https://packet-mule.onrender.com?pass=mule152&max=bob"
 				}
 
 			}
@@ -993,7 +1091,7 @@
 					"presentation" : 1,
 					"presentation_rect" : [ 744.0, 32.0, 360.0, 360.0 ],
 					"rendermode" : 0,
-					"url" : "https://packet-mule.onrender.com"
+					"url" : "https://packet-mule.onrender.com?pass=mule152&max=bob"
 				}
 
 			}
@@ -1189,8 +1287,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 14.0, 57.0, 203.0, 22.0 ],
-					"text" : "url https://packet-mule.onrender.com"
+					"patching_rect" : [ 14.0, 57.0, 288.0, 22.0 ],
+					"text" : "url https://packet-mule.onrender.com?pass=mule152"
 				}
 
 			}
@@ -1205,7 +1303,7 @@
 					"presentation" : 1,
 					"presentation_rect" : [ 15.0, 32.0, 360.0, 360.0 ],
 					"rendermode" : 0,
-					"url" : "https://packet-mule.onrender.com"
+					"url" : "https://packet-mule.onrender.com?pass=mule152"
 				}
 
 			}
@@ -1274,8 +1372,22 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-9", 0 ],
+					"source" : [ "obj-11", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-5", 0 ],
 					"source" : [ "obj-119", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-9", 0 ],
+					"source" : [ "obj-12", 0 ]
 				}
 
 			}

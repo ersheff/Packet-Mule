@@ -1,11 +1,4 @@
 export function handleMax(socket, max) {
-  socket.on("auth", (response) => {
-    if (!response.success) {
-      document.body.innerHTML = `<h1 style="text-align: center;">What's the password?</h1>`;
-      return;
-    }
-  });
-
   usernameMethod(socket, max);
 
   socket.on("username", (response) => {
@@ -45,10 +38,11 @@ function usernameMethod(socket, max) {
 function setupInterface(socket, username) {
   document.querySelector("dialog").close();
 
-  document.body.innerHTML = `
-    <div class="max-window">
+  document.body.innerHTML =
+    /* HTML */
+    `<div class="max-window">
       <div id="chat-output"></div>
-      <input type="text" id="chat-input" placeholder="chat: ${username}">
+      <input type="text" id="chat-input" placeholder="chat: ${username}" />
     </div>`;
 
   document.querySelector("#chat-input").addEventListener("change", (e) => {
