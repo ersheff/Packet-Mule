@@ -40,6 +40,21 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"bgcolor" : [ 0.109803921568627, 0.129411764705882, 0.172549019607843, 0.0 ],
+					"id" : "obj-26",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 769.5, 386.0, 226.0, 33.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 661.0, 41.0, 394.0, 20.0 ],
+					"text" : "A \"max\" url parameter can optionally be added to load with a username."
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-42",
 					"maxclass" : "message",
 					"numinlets" : 2,
@@ -59,106 +74,6 @@
 					"outlettype" : [ "bang" ],
 					"patching_rect" : [ 629.0, 57.0, 58.0, 22.0 ],
 					"text" : "loadbang"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"bgcolor" : [ 0.109803921568627, 0.129411764705882, 0.172549019607843, 0.0 ],
-					"bubble" : 1,
-					"bubble_outlinecolor" : [ 1.0, 0.717647058823529, 0.0, 1.0 ],
-					"fontface" : 1,
-					"id" : "obj-54",
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 874.0, 487.0, 165.0, 24.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 875.0, 491.5, 128.0, 24.0 ],
-					"text" : "visit Render's site"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-53",
-					"linecount" : 2,
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 661.0, 482.0, 294.0, 35.0 ],
-					"presentation" : 1,
-					"presentation_linecount" : 2,
-					"presentation_rect" : [ 661.0, 486.0, 212.0, 35.0 ],
-					"text" : ";\rmax launchbrowser https://render.com"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"angle" : 270.0,
-					"bgcolor" : [ 0.0, 0.0, 0.0, 0.0 ],
-					"border" : 1,
-					"id" : "obj-45",
-					"maxclass" : "panel",
-					"mode" : 0,
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 8.0, 356.0, 128.0, 128.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 10.0, 382.0, 576.0, 222.0 ],
-					"proportion" : 0.5
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"bgcolor" : [ 0.109803921568627, 0.129411764705882, 0.172549019607843, 0.0 ],
-					"bubble" : 1,
-					"bubble_outlinecolor" : [ 1.0, 0.717647058823529, 0.0, 1.0 ],
-					"fontface" : 1,
-					"id" : "obj-41",
-					"linecount" : 2,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 1040.0, 784.0, 162.0, 37.0 ],
-					"presentation" : 1,
-					"presentation_linecount" : 2,
-					"presentation_rect" : [ 957.0, 448.0, 128.0, 37.0 ],
-					"text" : "click to jumpstart server (if needed)"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-21",
-					"linecount" : 2,
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 744.0, 778.5, 294.0, 35.0 ],
-					"presentation" : 1,
-					"presentation_linecount" : 2,
-					"presentation_rect" : [ 661.0, 449.0, 294.0, 35.0 ],
-					"text" : ";\rmax launchbrowser https://packet-mule.onrender.com"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-9",
-					"linecount" : 4,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 744.0, 712.0, 394.0, 60.0 ],
-					"presentation" : 1,
-					"presentation_linecount" : 4,
-					"presentation_rect" : [ 661.0, 387.0, 394.0, 60.0 ],
-					"text" : "The Packet Mule server is currently hosted on the free tier with Render. At this level, the server will shutdown after a period of inactivity and may take up to a minute to restart. You can try jumpstarting the server by visiting https://packet-mule.onrender.com in any browser."
 				}
 
 			}
@@ -445,21 +360,6 @@
 , 			{
 				"box" : 				{
 					"bgcolor" : [ 0.109803921568627, 0.129411764705882, 0.172549019607843, 0.0 ],
-					"id" : "obj-26",
-					"linecount" : 2,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 769.5, 386.0, 226.0, 33.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 661.0, 40.0, 386.0, 20.0 ],
-					"text" : "It is preset with the username \"bob\" by adding the \"max\" url parameter."
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"bgcolor" : [ 0.109803921568627, 0.129411764705882, 0.172549019607843, 0.0 ],
 					"bubble" : 1,
 					"bubble_outlinecolor" : [ 1.0, 0.717647058823529, 0.0, 1.0 ],
 					"fontface" : 1,
@@ -583,8 +483,8 @@
 					"patching_rect" : [ 352.5, 189.0, 351.0, 33.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
-					"presentation_rect" : [ 377.0, 86.0, 262.0, 33.0 ],
-					"text" : "A simple authentication occurs by adding \"pass\" as a url parameter, e.g. ?pass=mule152"
+					"presentation_rect" : [ 377.0, 86.0, 266.0, 33.0 ],
+					"text" : "A simple authentication occurs by adding \"pass\" as a url parameter, e.g. ?pass=password"
 				}
 
 			}
@@ -1300,15 +1200,15 @@
 				"box" : 				{
 					"bgcolor" : [ 0.109803921568627, 0.129411764705882, 0.172549019607843, 0.0 ],
 					"id" : "obj-149",
-					"linecount" : 6,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 744.0, 613.0, 351.0, 87.0 ],
+					"patching_rect" : [ 744.0, 613.0, 351.0, 74.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 3,
 					"presentation_rect" : [ 15.0, 413.0, 571.0, 47.0 ],
-					"text" : "On your phone, add your username as a \"phone\" parameter in the url to automatically receive sensor data\ne.g. \"https://packet-mule.onrender.com/?pass=mule152&phone=username\"\n(only tested with iPhone so far)"
+					"text" : "On your phone, add your username as a \"phone\" parameter in the url to automatically receive sensor data\ne.g. \"https://your-server-url.com?pass=password&phone=username\"\n(only tested on an iPhone so far)"
 				}
 
 			}
@@ -1396,7 +1296,8 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 34.0, 371.0, 333.5, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 15.0, 328.0, 360.0, 22.0 ]
+					"presentation_rect" : [ 15.0, 328.0, 360.0, 22.0 ],
+					"text" : "title \"Cycling '74\""
 				}
 
 			}
@@ -1409,7 +1310,8 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 769.5, 357.0, 333.5, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 661.0, 328.0, 360.0, 22.0 ]
+					"presentation_rect" : [ 661.0, 328.0, 360.0, 22.0 ],
+					"text" : "title \"Cycling '74\""
 				}
 
 			}
@@ -1422,7 +1324,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 768.0, 35.0, 368.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 661.0, 18.0, 368.0, 20.0 ],
+					"presentation_rect" : [ 661.0, 19.0, 368.0, 20.0 ],
 					"text" : "You can use this second jweb object as a dummy client for testing."
 				}
 
@@ -1430,14 +1332,15 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-121",
+					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 768.0, 57.0, 346.0, 22.0 ],
+					"patching_rect" : [ 768.0, 57.0, 346.0, 35.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 661.0, 62.0, 360.0, 22.0 ],
-					"text" : "url https://packet-mule.onrender.com?pass=mule152&max=bob"
+					"presentation_rect" : [ 661.0, 62.0, 347.0, 22.0 ],
+					"text" : "url https://your-server-url.com?pass=password&max=username"
 				}
 
 			}
@@ -1452,7 +1355,7 @@
 					"presentation" : 1,
 					"presentation_rect" : [ 661.0, 86.0, 360.0, 240.0 ],
 					"rendermode" : 0,
-					"url" : "https://packet-mule.onrender.com?pass=mule152&max=bob"
+					"url" : "https://cycling74.com"
 				}
 
 			}
@@ -1638,8 +1541,8 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 14.0, 68.0, 288.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 15.0, 63.0, 360.0, 22.0 ],
-					"text" : "url https://packet-mule.onrender.com?pass=mule152"
+					"presentation_rect" : [ 15.0, 63.0, 256.0, 22.0 ],
+					"text" : "url https://your-server-url.com?pass=password"
 				}
 
 			}
@@ -1654,7 +1557,7 @@
 					"presentation" : 1,
 					"presentation_rect" : [ 15.0, 86.0, 360.0, 240.0 ],
 					"rendermode" : 0,
-					"url" : "https://packet-mule.onrender.com?pass=mule152"
+					"url" : "https://cycling74.com"
 				}
 
 			}
@@ -1718,7 +1621,24 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 12.0, 12.0, 128.0, 128.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 10.0, 10.0, 629.0, 351.0 ],
+					"presentation_rect" : [ 10.0, 10.0, 633.0, 351.0 ],
+					"proportion" : 0.5
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"angle" : 270.0,
+					"bgcolor" : [ 0.0, 0.0, 0.0, 0.0 ],
+					"border" : 1,
+					"id" : "obj-45",
+					"maxclass" : "panel",
+					"mode" : 0,
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 8.0, 356.0, 128.0, 128.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 10.0, 382.0, 576.0, 222.0 ],
 					"proportion" : 0.5
 				}
 
