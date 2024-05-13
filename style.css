@@ -1,12 +1,15 @@
 * {
   box-sizing: border-box;
-  font-size: 0.9rem;
 }
 
 .max-window {
   display: flex;
   flex-direction: column;
   height: 100vh;
+
+  & * {
+    font-size: 0.9rem;
+  }
 }
 
 .phone-window {
