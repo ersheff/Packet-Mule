@@ -1,6 +1,6 @@
-import { handlePhone } from "./pm-phone.js";
+import { handleBrowser } from "./pm-browser.js";
 import { handleMax } from "./pm-max.js";
-import { handleTest } from "./pm-test.js";
+import { handlePhone } from "./pm-phone.js";
 
 const params = new URLSearchParams(window.location.search);
 const phone = params.get("phone");

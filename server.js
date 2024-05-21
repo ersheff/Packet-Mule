@@ -2,6 +2,7 @@ import express from "express";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 import bcrypt from "bcrypt";
+import { handlePhone } from "./pm-phone";
 
 const app = express();
 app.use(express.static("./"));
@@ -24,125 +25,155 @@ const users = {};
 const buffers = {};
 
 io.on("connection", (socket) => {
-  console.log(`connect ${socket.id}`);
-
-  if (socket.recovered && socket.data.reconnectTimeout) {
-    console.log("recovered");
-    clearTimeout(socket.data.reconnectTimeout);
-    socket.data.reconnectTimeout = null;
-    console.log(socket.data.reconnectTimeout);
-    console.log(users);
-  } else {
-    newConnection(socket);
-  }
-
-  // handle data from max
-  socket.on("pm", (incoming) => {
-    incoming.forEach((packet) => {
-      const { target } = packet;
-      const userId = users[target];
-      const _room = `_${target}`;
-      const _roomTarget = io.sockets.adapter.rooms.has(_room);
-
-      if (userId || _roomTarget || target === "all") {
-        const outgoing = {
-          source: _roomTarget ? target : socket.data.username,
-          header: packet.header,
-          data: packet.data
-        };
-        if (target === "all") {
-          socket.broadcast.emit("pm", outgoing);
-        } else if (_roomTarget) {
-          buffers[_room] = buffers[_room] || [];
-          buffers[_room].push(outgoing);
-        } else {
-          buffers[userId] = buffers[userId] || [];
-          buffers[userId].push(outgoing);
-        }
+  authentication(socket)
+    .then(() => {
+      if (socket.recovered && socket.data.reconnectTimeout) {
+        console.log(`${socket.data.username} recovered!`);
+        clearTimeout(socket.data.reconnectTimeout);
+        socket.data.reconnectTimeout = null;
       } else {
-        console.log(`No target found for ${target}.`);
+        socket.on("username", (incoming) => handleUsername(socket, incoming));
       }
+      socket.on("chat", (incoming) => handleChat(socket, incoming));
+      socket.on("pm", (incoming) => handlePm(socket, incoming));
+      socket.on("phone", (incoming) => handlePhone(socket, incoming));
+      socket.on("join-room", (room) => joinRoom(socket, room));
+      socket.on("leave-room", (room) => leaveRoom(socket, room));
+      socket.on("disconnect", (reason) => handleDisconnect(socket, reason));
+    })
+    .catch((error) => {
+      console.error(error.message);
     });
-  });
-
-  // handle data from phone
-  socket.on("phone", (incoming) => {
-    const target = users[incoming.target];
-    socket.to(target).emit("phone", incoming.data);
-  });
-
-  socket.on("chat", (incoming) => {
-    console.log(`chat from ${socket.data.username}`);
-    const outgoing = `<p>${socket.data.username}: ${incoming}</p>`;
-    console.log("chat", outgoing);
-    io.emit("chat", outgoing);
-  });
-
-  socket.on("join-room", (room) => {
-    const _room = `_${room}`;
-    const _roomNew = !io.sockets.adapter.rooms.has(_room);
-    socket.join(_room);
-    if (_roomNew) {
-      updateRoomsAll();
-    } else updateRooms(socket);
-  });
-
-  socket.on("leave-room", (room) => {
-    const _room = `_${room}`;
-    socket.leave(_room);
-    const _roomEmpty = !io.sockets.adapter.rooms.has(_room);
-    if (_roomEmpty) {
-      updateRoomsAll();
-    } else updateRooms(socket);
-  });
-
-  socket.on("disconnect", (reason) => {
-    console.log(`disconnect ${socket.id} due to ${reason}`);
-    socket.data.reconnectTimeout = setTimeout(() => {
-      if (users[socket.data.username]) {
-        delete users[socket.data.username];
-        delete buffers[socket.id];
-        updateUsers();
-        const _rooms = Array.from(socket.rooms).filter((room) =>
-          room.startsWith("_")
-        );
-        for (const _room of _rooms) {
-          if (io.sockets.adapter.rooms.get(_room).size === 1) {
-            updateRoomsAll();
-            break;
-          }
-        }
-        console.log("user data deleted for ", socket.data.username);
-      }
-    }, disconnectTimeout - 1000);
-  });
 });
 
-function newConnection(socket) {
-  if (password) {
-    const token = socket.handshake.auth.token;
-    if (!token || !bcrypt.compareSync(token, hashedPassword)) {
-      socket.emit("auth", { success: false });
-      socket.disconnect();
-    } else socket.emit("auth", { success: true });
-  }
-
-  // set username
-  socket.on("username", (username) => {
-    if (users[username]) {
-      socket.emit("username", { success: false });
-      return;
+setInterval(() => {
+  for (const target in buffers) {
+    if (buffers[target].length > 0) {
+      io.to(target).emit("pm", buffers[target]);
+      buffers[target] = [];
     }
-    socket.data.username = username;
-    users[socket.data.username] = socket.id;
-    socket.data.username = username;
-    socket.emit("username", { success: true, username: socket.data.username });
-    updateUsers();
-    updateRooms(socket);
+  }
+}, 50);
+
+// data handlers
+
+function handleChat(socket, incoming) {
+  const outgoing = `<p>${socket.data.username}: ${incoming}</p>`;
+  io.emit("chat", outgoing);
+}
+
+function handlePm(socket, incoming) {
+  incoming.forEach((packet) => {
+    const { target } = packet;
+    const userId = users[target];
+    const _room = `_${target}`;
+    const _roomTarget = io.sockets.adapter.rooms.has(_room);
+    if (userId || _roomTarget || target === "all") {
+      const outgoing = {
+        source: _roomTarget ? target : socket.data.username,
+        header: packet.header,
+        data: packet.data
+      };
+      if (target === "all") {
+        socket.broadcast.emit("pm", outgoing);
+      } else if (_roomTarget) {
+        buffers[_room] = buffers[_room] || [];
+        buffers[_room].push(outgoing);
+      } else {
+        buffers[userId] = buffers[userId] || [];
+        buffers[userId].push(outgoing);
+      }
+    } else {
+      console.log(`No target found for ${target}.`);
+    }
   });
 }
 
-//
+function joinRoom(socket, room) {
+  const _room = `_${room}`;
+  const _roomNew = !io.sockets.adapter.rooms.has(_room);
+  socket.join(_room);
+  if (_roomNew) {
+    updateRoomsAll();
+  } else updateRooms(socket);
+}
+
+function leaveRoom(socket, room) {
+  const _room = `_${room}`;
+  socket.leave(_room);
+  const _roomEmpty = !io.sockets.adapter.rooms.has(_room);
+  if (_roomEmpty) {
+    updateRoomsAll();
+  } else updateRooms(socket);
+}
+
+function handlePhone(socket, incoming) {
+  const target = users[incoming.target];
+  socket.to(target).emit("phone", incoming.data);
+}
+
+// connection handlers
+
+function authentication(socket) {
+  return new Promise((resolve, reject) => {
+    if (password) {
+      const token = socket.handshake.auth.token;
+      if (!token || !bcrypt.compareSync(token, hashedPassword)) {
+        handleDisconnect(socket);
+        socket.disconnect(true);
+        reject(new Error("Authentication failed."));
+      } else {
+        console.log(`${socket.id} authenticated.`);
+        resolve();
+      }
+    } else resolve();
+  });
+}
+
+function handleUsername(socket, username) {
+  if (users[username]) {
+    socket.emit("username", { success: false });
+  } else {
+    socket.data.username = username;
+    users[socket.data.username] = socket.id;
+    socket.emit("username", {
+      success: true,
+      username: socket.data.username
+    });
+    updateUsers();
+    updateRooms(socket);
+  }
+}
+
+function handleDisconnect(socket, reason) {
+  console.log(`${socket.id} disconnected due to ${reason}`);
+  socket.data.reconnectTimeout = setTimeout(() => {
+    clearData(socket);
+  }, disconnectTimeout - 1000);
+}
+
+function clearData(socket) {
+  const { username } = socket.data;
+  if (users[username]) {
+    delete users[username];
+    delete buffers[socket.id];
+    updateUsers();
+  }
+  const _rooms = Array.from(socket.rooms).filter((room) =>
+    room.startsWith("_")
+  );
+  for (const _room of _rooms) {
+    if (io.sockets.adapter.rooms.get(_room).size === 1) {
+      socket.rooms.clear();
+      updateRoomsAll();
+      break;
+    }
+  }
+  socket.data = {};
+  console.log(`${username}'s user data deleted.`);
+}
+
+// updaters
 
 function updateUsers() {
   const userArray = Object.keys(users);
@@ -181,12 +212,3 @@ function updateRoomsAll() {
     updateRooms(socket);
   });
 }
-
-setInterval(() => {
-  for (const target in buffers) {
-    if (buffers[target].length > 0) {
-      io.to(target).emit("pm", buffers[target]);
-      buffers[target] = [];
-    }
-  }
-}, 50);

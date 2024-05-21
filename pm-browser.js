@@ -1,4 +1,4 @@
-export function handleTest(socket, max) {
+export function handleBrowser(socket, max) {
   usernameMethod(socket, max);
 
   socket.on("username", (response) => {
