@@ -2,7 +2,6 @@ import express from "express";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 import bcrypt from "bcrypt";
-import { handlePhone } from "./pm-phone";
 
 const app = express();
 app.use(express.static("./"));
@@ -27,6 +26,7 @@ const buffers = {};
 io.on("connection", (socket) => {
   authentication(socket)
     .then(() => {
+      socket.emit("auth", { success: true });
       if (socket.recovered && socket.data.reconnectTimeout) {
         console.log(`${socket.data.username} recovered!`);
         clearTimeout(socket.data.reconnectTimeout);
@@ -119,6 +119,7 @@ function authentication(socket) {
     if (password) {
       const token = socket.handshake.auth.token;
       if (!token || !bcrypt.compareSync(token, hashedPassword)) {
+        socket.emit("auth", { success: false });
         handleDisconnect(socket);
         socket.disconnect(true);
         reject(new Error("Authentication failed."));

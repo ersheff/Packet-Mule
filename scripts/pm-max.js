@@ -1,4 +1,4 @@
-export function handleBrowser(socket, max) {
+export function setupMax(socket, max) {
   usernameMethod(socket, max);
 
   socket.on("username", (response) => {
@@ -31,21 +31,7 @@ function usernameMethod(socket, max) {
 //
 
 function setupInterface(socket, username) {
-  document.body.innerHTML =
-    /* HTML */
-    ` <dialog class="modals" id="userlist-modal"></dialog>
-      <dialog class="modals" id="roomlist-modal"></dialog>
-      <div class="max-window">
-        <div id="chat-output"></div>
-        <div class="chat-container">
-          <input type="text" id="chat-input" placeholder="chat: ${username}" />
-          <button id="userlist-button">Users</button>
-          <button id="roomlist-button">Groups</button>
-        </div>
-      </div>`;
-
   document.querySelector("#chat-input").addEventListener("change", (e) => {
-    console.log("chat", e.target.value);
     socket.emit("chat", e.target.value);
     e.target.value = "";
   });
@@ -79,13 +65,13 @@ function setupListeners(socket) {
   socket.on("pm", (incoming) => {
     for (const packet of incoming) {
       const msg = [packet.source, packet.header, ...packet.data];
-      // window.max.outlet(...msg);
+      window.max.outlet(...msg);
     }
   });
 
   socket.on("phone", (incoming) => {
     const msg = ["phone", ...incoming];
-    // window.max.outlet(...msg);
+    window.max.outlet(...msg);
   });
 
   socket.on("userlist", (incoming) => {
@@ -114,13 +100,13 @@ function setupListeners(socket) {
 function setupEmitter(socket) {
   let payload = {};
 
-  // window.max.bindInlet("pm", function () {
-  //   const args = Array.from(arguments);
-  //   const [target, header, ...data] = args;
-  //   const key = `${target}/${header}`;
-  //   const packet = { target, header, data };
-  //   payload[key] = packet;
-  // });
+  window.max.bindInlet("pm", function () {
+    const args = Array.from(arguments);
+    const [target, header, ...data] = args;
+    const key = `${target}/${header}`;
+    const packet = { target, header, data };
+    payload[key] = packet;
+  });
 
   setInterval(() => {
     if (Object.keys(payload).length > 0) {

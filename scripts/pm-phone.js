@@ -1,4 +1,4 @@
-export function handlePhone(socket, phone) {
+export function setupPhone(socket, phone) {
   let xyz, abg, xyzabg12, sentXyzabg12;
   let lastXyz = [0, 0, 0];
   const sliderVals = [0, 0];
@@ -6,21 +6,6 @@ export function handlePhone(socket, phone) {
   document
     .querySelector("html")
     .style.setProperty("overscroll-behavior", "none");
-
-  document.body.innerHTML =
-    /* HTML */
-    ` <div class="phone-window">
-      <div class="slider-container">
-        <input type="range" id="slider1" />
-        <input type="range" id="slider2" />
-      </div>
-      <div>
-        <p>Accelerometer</p>
-        <div id="accel-data"></div>
-        <p>Gyro</p>
-        <div id="gyro-data"></div>
-      </div>
-    </div>`;
 
   if (typeof DeviceMotionEvent.requestPermission === "function") {
     window.alert(

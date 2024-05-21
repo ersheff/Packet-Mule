@@ -1,89 +1,47 @@
-import { handleBrowser } from "./pm-browser.js";
-import { handleMax } from "./pm-max.js";
-import { handlePhone } from "./pm-phone.js";
+import { setupBrowser } from "./scripts/pm-browser.js";
+import { setupMax } from "./scripts/pm-max.js";
+import { setupPhone } from "./scripts/pm-phone.js";
 
 const params = new URLSearchParams(window.location.search);
 const phone = params.get("phone");
 const max = params.get("max");
 const pass = params.get("pass");
 
-// if (!window.max && !phone) {
-//   document.body.innerHTML =
-//     /* HTML */
-//     `<div style="padding: 1rem; text-align: center;">
-//       <h1 style="margin-top: 1rem;">Whatchoo doin'?</h1>
-//       <p>
-//         To use Packet Mule in Max, load this page in a jweb object with the
-//         query string <code>?pass=password</code>.
-//       </p>
-//       <p>
-//         To send controller data from your phone to Max, load this page in a
-//         mobile browser with the query string
-//         <code>?pass=password?phone=username</code>.
-//       </p>
-//     </div>`;
-//   return;
-// }
-
 const socket = io({ auth: { token: pass } });
 
 socket.on("connect", () => {
-  if (socket.recovered) {
-    console.log("recovered");
-  } else {
-    handleConnect();
-  }
-  setTimeout(() => {
-    // close the low-level connection and trigger a reconnection
-    socket.io.engine.close();
-  }, 5000);
-});
+  socket.once("auth", async (response) => {
+    if (!response.success) {
+      document.body.innerHTML = await fetchHTML("auth-error.html");
+      return;
+    }
+    if (!socket.recovered) {
+      if (window.max) {
+        document.body.innerHTML = await fetchHTML("max.html");
+        setupMax(socket, max);
+      } else if (phone) {
+        document.body.innerHTML = await fetchHTML("phone.html");
+        setupPhone(socket, phone);
+      } else {
+        document.body.innerHTML = await fetchHTML("browser.html");
+        setupBrowser(socket, browser);
+      }
+    }
+  });
 
-function handleConnect() {
-  authAndHandlers(socket, phone, max);
-
-  socket.once("disconnect", () => {
+  socket.on("disconnect", () => {
     console.log("disconnected");
     console.log(socket);
     // socket.removeAllListeners();
     //socket.once("connect", handleConnect);
   });
-}
 
-function authAndHandlers(socket, phone, max) {
-  socket.once("auth", (response) => {
-    if (!response.success) {
-      document.body.innerHTML = `<h1 style="text-align: center;">What's the password?</h1>`;
-      return;
-    }
+  setTimeout(() => {
+    socket.io.engine.close();
+  }, 5000);
+});
 
-    if (!window.max) {
-      // handlePhone(socket, phone);
-      document.body.innerHTML =
-        /* HTML */
-        `<dialog id="username-modal">
-          <form method="dialog">
-            <input
-              type="text"
-              id="username-input"
-              placeholder="enter username"
-            />
-          </form>
-        </dialog>`;
-      handleTest(socket);
-    } else {
-      document.body.innerHTML =
-        /* HTML */
-        `<dialog id="username-modal">
-          <form method="dialog">
-            <input
-              type="text"
-              id="username-input"
-              placeholder="enter username"
-            />
-          </form>
-        </dialog>`;
-      handleMax(socket, max);
-    }
-  });
+async function fetchHTML(path) {
+  const response = await fetch(path);
+  return await response.text();
 }
