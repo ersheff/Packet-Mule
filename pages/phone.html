@@ -9,6 +9,12 @@
     padding: 1rem;
   }
 
+  form {
+    width: 90%;
+    max-width: 350px;
+    text-align: center;
+  }
+
   p {
     margin: 0;
   }
@@ -21,6 +27,17 @@
     height: 1rem;
   }
 </style>
+
+<dialog id="username-modal">
+  <form method="dialog">
+    <h1>Packet Mule</h1>
+    <p>The mobile interface is used to send phone sensor data to an existing user's Max patch.</p>
+    <div class="spacer"></div>
+    <input type="text" id="username-input" placeholder="enter existing Max username" />
+    <div class="spacer"></div>
+    <p>Learn more about Packet Mule <a href="https://github.com/ersheff/Packet-Mule">here</a>.</p>
+  </form>
+</dialog>
 
 <div class="phone-window">
   <div class="slider-container">

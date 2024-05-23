@@ -3,9 +3,10 @@ import pmMax from "./scripts/pm-max.js";
 import pmPhone from "./scripts/pm-phone.js";
 
 const params = new URLSearchParams(window.location.search);
-const phone = params.get("phone");
 const username = params.get("user");
 const pass = params.get("pass");
+
+const phone = isMobile();
 
 const socket = io({ auth: { token: pass } });
 
@@ -17,7 +18,8 @@ socket.on("auth", async (response) => {
   if (!socket.recovered) {
     if (phone) {
       document.body.innerHTML = await fetchHTML("./pages/phone.html");
-      pmPhone.setup(socket, phone);
+      pmPhone.usernameMethod(socket, username);
+      pmPhone.setup(socket, username);
       return;
     } else if (window.max) {
       document.body.innerHTML = await fetchHTML("./pages/max.html");
@@ -42,11 +44,17 @@ if (!phone) {
   socket.on("roomlist", (incoming) =>
     pmBrowser.handleRoomlist(socket, incoming)
   );
-}
+} else socket.on("username", (response) => pmPhone.handlePhoneUser(response));
 
 async function fetchHTML(path) {
   const response = await fetch(path);
   return await response.text();
+}
+
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
 }
 
 // simulate disconnect for recovery testing

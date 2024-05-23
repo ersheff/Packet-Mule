@@ -33,6 +33,7 @@ io.on("connection", (socket) => {
         socket.data.reconnectTimeout = null;
       }
       socket.on("username", (incoming) => handleUsername(socket, incoming));
+      socket.on("phone-user", (incoming) => handlePhoneUser(socket, incoming));
       socket.on("chat", (incoming) => handleChat(socket, incoming));
       socket.on("pm", (incoming) => handlePm(socket, incoming));
       socket.on("phone", (incoming) => handlePhone(socket, incoming));
@@ -143,6 +144,14 @@ function handleUsername(socket, username) {
     });
     updateUsers();
     updateRooms(socket);
+  }
+}
+
+function handlePhoneUser(socket, username) {
+  if (users[username]) {
+    socket.emit("username", { success: true });
+  } else {
+    socket.emit("username", { success: false });
   }
 }
 
