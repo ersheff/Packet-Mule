@@ -1,5 +1,11 @@
-export function setupPhone(socket, phone) {
-  let xyz, abg, xyzabg12, sentXyzabg12;
+export default {
+  setup
+};
+
+function setup(socket, phone) {
+  let xyz = [0, 0, 0];
+  let abg = [0, 0, 0];
+  let xyzabg12, sentXyzabg12;
   let lastXyz = [0, 0, 0];
   const sliderVals = [0, 0];
 

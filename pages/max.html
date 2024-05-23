@@ -1,14 +1,139 @@
+<style>
+  /* general */
+
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-size: 0.9rem;
+  }
+
+  form {
+    text-align: center;
+  }
+
+  input[type="text"] {
+    height: 2rem;
+    margin: 0;
+    padding: 0 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  button {
+    height: 2rem;
+    padding: 0.2rem;
+  }
+
+  button:focus {
+    box-shadow: none;
+  }
+
+  .spacer {
+    height: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  /* modals */
+
+  dialog {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  dialog * {
+    margin: 0;
+  }
+
+  .inner-modal {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    min-height: 95%;
+  }
+
+  #userlist-modal ul {
+    padding: 0 1rem;
+  }
+
+  #userlist-modal li {
+    margin: 0;
+  }
+
+  #roomlist-modal ul {
+    padding: 0;
+  }
+
+  #roomlist-modal li {
+    list-style: none;
+    margin: 0.2rem 0;
+  }
+
+  #room-input {
+    flex-shrink: 0;
+  }
+
+  /* chat */
+  .chat-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chat-input-container {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .chat-input-container button {
+    font-size: 0.8rem;
+  }
+
+  #chat-output {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+
+  #chat-output p {
+    margin: 0;
+    padding: 0.5rem;
+  }
+
+  #chat-output p:nth-child(odd) {
+    background-color: #202632;
+  }
+</style>
+
 <dialog id="username-modal">
   <form method="dialog">
+    <h1>Packet Mule</h1>
+    <div class="spacer"></div>
     <input type="text" id="username-input" placeholder="enter username" />
+    <div class="spacer"></div>
+    <p>Learn more about Packet Mule <a href="https://github.com/ersheff/Packet-Mule">here</a>.</p>
   </form>
 </dialog>
-<dialog class="list-modals" id="userlist-modal"></dialog>
-<dialog class="list-modals" id="roomlist-modal"></dialog>
-<div class="max-window">
+
+<dialog class="list-modals" id="userlist-modal">
+  <article class="inner-modal">
+    <div id="userlist-container"></div>
+  </article>
+</dialog>
+
+<dialog class="list-modals" id="roomlist-modal">
+  <article class="inner-modal">
+    <input type="text" id="room-input" placeholder="create group" />
+    <div class="spacer"></div>
+    <div id="roomlist-container"></div>
+  </article>
+</dialog>
+
+<div class="chat-container">
   <div id="chat-output"></div>
-  <div class="chat-container">
-    <input type="text" id="chat-input" placeholder="chat: ${username}" />
+  <div class="chat-input-container">
+    <input type="text" id="chat-input" />
     <button id="userlist-button">Users</button>
     <button id="roomlist-button">Groups</button>
   </div>

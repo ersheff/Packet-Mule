@@ -31,19 +31,22 @@ io.on("connection", (socket) => {
         console.log(`${socket.data.username} recovered!`);
         clearTimeout(socket.data.reconnectTimeout);
         socket.data.reconnectTimeout = null;
-      } else {
-        socket.on("username", (incoming) => handleUsername(socket, incoming));
       }
+      socket.on("username", (incoming) => handleUsername(socket, incoming));
       socket.on("chat", (incoming) => handleChat(socket, incoming));
       socket.on("pm", (incoming) => handlePm(socket, incoming));
       socket.on("phone", (incoming) => handlePhone(socket, incoming));
       socket.on("join-room", (room) => joinRoom(socket, room));
       socket.on("leave-room", (room) => leaveRoom(socket, room));
-      socket.on("disconnect", (reason) => handleDisconnect(socket, reason));
     })
     .catch((error) => {
+      socket.emit("auth", { success: false });
+      handleDisconnect(socket);
+      socket.disconnect(true);
       console.error(error.message);
     });
+  socket.on("disconnect", (reason) => handleDisconnect(socket, reason));
+  socket.on("purge-user", () => handlePurge(socket));
 });
 
 setInterval(() => {
@@ -66,19 +69,19 @@ function handlePm(socket, incoming) {
   incoming.forEach((packet) => {
     const { target } = packet;
     const userId = users[target];
-    const _room = `_${target}`;
-    const _roomTarget = io.sockets.adapter.rooms.has(_room);
-    if (userId || _roomTarget || target === "all") {
+    const $room = `$${target}`;
+    const $roomTarget = io.sockets.adapter.rooms.has($room);
+    if (userId || $roomTarget || target === "all") {
       const outgoing = {
-        source: _roomTarget ? target : socket.data.username,
+        source: $roomTarget ? target : socket.data.username,
         header: packet.header,
         data: packet.data
       };
       if (target === "all") {
-        socket.broadcast.emit("pm", outgoing);
-      } else if (_roomTarget) {
-        buffers[_room] = buffers[_room] || [];
-        buffers[_room].push(outgoing);
+        socket.broadcast.emit("pm", [outgoing]);
+      } else if ($roomTarget) {
+        buffers[$room] = buffers[$room] || [];
+        buffers[$room].push(outgoing);
       } else {
         buffers[userId] = buffers[userId] || [];
         buffers[userId].push(outgoing);
@@ -90,19 +93,19 @@ function handlePm(socket, incoming) {
 }
 
 function joinRoom(socket, room) {
-  const _room = `_${room}`;
-  const _roomNew = !io.sockets.adapter.rooms.has(_room);
-  socket.join(_room);
-  if (_roomNew) {
+  const $room = `$${room}`;
+  const $roomNew = !io.sockets.adapter.rooms.has($room);
+  socket.join($room);
+  if ($roomNew) {
     updateRoomsAll();
   } else updateRooms(socket);
 }
 
 function leaveRoom(socket, room) {
-  const _room = `_${room}`;
-  socket.leave(_room);
-  const _roomEmpty = !io.sockets.adapter.rooms.has(_room);
-  if (_roomEmpty) {
+  const $room = `$${room}`;
+  socket.leave($room);
+  const $roomEmpty = !io.sockets.adapter.rooms.has($room);
+  if ($roomEmpty) {
     updateRoomsAll();
   } else updateRooms(socket);
 }
@@ -119,9 +122,6 @@ function authentication(socket) {
     if (password) {
       const token = socket.handshake.auth.token;
       if (!token || !bcrypt.compareSync(token, hashedPassword)) {
-        socket.emit("auth", { success: false });
-        handleDisconnect(socket);
-        socket.disconnect(true);
         reject(new Error("Authentication failed."));
       } else {
         console.log(`${socket.id} authenticated.`);
@@ -147,10 +147,31 @@ function handleUsername(socket, username) {
 }
 
 function handleDisconnect(socket, reason) {
+  if (!socket.data.username) return;
   console.log(`${socket.id} disconnected due to ${reason}`);
-  socket.data.reconnectTimeout = setTimeout(() => {
+  if (socket.data.purge) {
+    console.log(
+      `${socket.data.username}'s browser was refreshed, purging data.`
+    );
     clearData(socket);
-  }, disconnectTimeout - 1000);
+  } else {
+    socket.data.reconnectTimeout = setTimeout(() => {
+      clearData(socket);
+    }, disconnectTimeout - 1000);
+  }
+}
+
+function handlePurge(socket) {
+  socket.data.purge = true;
+  const $rooms = Array.from(socket.rooms).filter((room) =>
+    room.startsWith("$")
+  );
+  for (const $room of $rooms) {
+    if (io.sockets.adapter.rooms.get($room).size === 1) {
+      socket.data.lastIn$room = true;
+      break;
+    }
+  }
 }
 
 function clearData(socket) {
@@ -160,16 +181,17 @@ function clearData(socket) {
     delete buffers[socket.id];
     updateUsers();
   }
-  const _rooms = Array.from(socket.rooms).filter((room) =>
-    room.startsWith("_")
+  const $rooms = Array.from(socket.rooms).filter((room) =>
+    room.startsWith("$")
   );
-  for (const _room of _rooms) {
-    if (io.sockets.adapter.rooms.get(_room).size === 1) {
-      socket.rooms.clear();
-      updateRoomsAll();
+  for (const $room of $rooms) {
+    if (io.sockets.adapter.rooms.get($room).size === 1) {
+      socket.data.lastIn$room = true;
       break;
     }
   }
+  socket.rooms.clear();
+  if (socket.data.lastIn$room) updateRoomsAll();
   socket.data = {};
   console.log(`${username}'s user data deleted.`);
 }
@@ -187,21 +209,17 @@ function updateUsers() {
 }
 
 function updateRooms(socket) {
-  const _rooms = Array.from(io.sockets.adapter.rooms.keys()).filter((room) =>
-    room.startsWith("_")
+  const $rooms = Array.from(io.sockets.adapter.rooms.keys()).filter((room) =>
+    room.startsWith("$")
   );
-  let roomlist = `
-        <input type="text" id="room-input" placeholder="create group" />
-        <div class="spacer"></div>
-        <ul>
-    `;
-  _rooms.forEach((_room) => {
-    const isChecked = socket.rooms.has(_room) ? "checked" : "";
+  let roomlist = `<ul>`;
+  $rooms.forEach(($room) => {
+    const isChecked = socket.rooms.has($room) ? "checked" : "";
     roomlist +=
       /* HTML */
       ` <li>
-        <input type="checkbox" value="${_room.substring(1)}" ${isChecked} />
-        <span>${_room.substring(1)}</span>
+        <input type="checkbox" value="${$room.substring(1)}" ${isChecked} />
+        <span>${$room.substring(1)}</span>
       </li>`;
   });
   roomlist += "</ul>";
