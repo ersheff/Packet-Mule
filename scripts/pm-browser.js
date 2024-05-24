@@ -83,7 +83,7 @@ function handlePhone(incoming) {
   if (window.max) {
     window.max.outlet(...msg);
   } else {
-    const phoneArray = msg.map((value) => Number(value).toFixed(2));
+    const phoneArray = incoming.map((value) => Number(value).toFixed(2));
     document.querySelector("#phone-monitor").innerText = phoneArray.join(" ");
   }
 }
