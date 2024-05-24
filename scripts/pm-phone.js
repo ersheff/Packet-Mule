@@ -19,53 +19,53 @@ function setup(socket, username) {
   let lastXyz = [0, 0, 0];
   const sliderVals = [0, 0];
 
-  document
-    .querySelector("html")
-    .style.setProperty("overscroll-behavior", "none");
-
   if (typeof DeviceMotionEvent.requestPermission === "function") {
-    if (
-      window.confirm(
-        "This application requires access to your device's motion sensors."
-      )
-    ) {
-      DeviceMotionEvent.requestPermission()
-        .then((permissionState) => {
-          if (permissionState === "granted") {
-            window.addEventListener("devicemotion", (event) => {
-              [xyz, lastXyz] = handleMotion(event, xyz, lastXyz);
-            });
-          }
-        })
-        .catch(console.error);
-    }
+    document.querySelector("#permission-modal").showModal();
+    document
+      .querySelector("#permission-close")
+      .addEventListener("click", () => {
+        document.querySelector("#permission-modal").close();
+      });
+    document
+      .querySelector("#permission-confirm")
+      .addEventListener("click", () => {
+        DeviceMotionEvent.requestPermission()
+          .then((permissionState) => {
+            if (permissionState === "granted") {
+              window.addEventListener("devicemotion", (event) => {
+                [xyz, lastXyz] = handleMotion(event, xyz, lastXyz);
+              });
+              window.addEventListener("deviceorientation", (event) => {
+                abg = handleOrientation(event);
+              });
+            }
+          })
+          .catch(console.error);
+      });
   } else {
     window.addEventListener("devicemotion", (event) => {
       [xyz, lastXyz] = handleMotion(event, xyz, lastXyz);
     });
-  }
-
-  if (typeof DeviceOrientationEvent.requestPermission === "function") {
-    if (
-      window.confirm(
-        "This application requires access to your device's orientation sensors."
-      )
-    ) {
-      DeviceOrientationEvent.requestPermission()
-        .then((permissionState) => {
-          if (permissionState === "granted") {
-            window.addEventListener("deviceorientation", (event) => {
-              abg = handleOrientation(event);
-            });
-          }
-        })
-        .catch(console.error);
-    }
-  } else {
     window.addEventListener("deviceorientation", (event) => {
       abg = handleOrientation(event);
     });
   }
+
+  // if (typeof DeviceOrientationEvent.requestPermission === "function") {
+  //   DeviceOrientationEvent.requestPermission()
+  //     .then((permissionState) => {
+  //       if (permissionState === "granted") {
+  //         window.addEventListener("deviceorientation", (event) => {
+  //           abg = handleOrientation(event);
+  //         });
+  //       }
+  //     })
+  //     .catch(console.error);
+  // } else {
+  //   window.addEventListener("deviceorientation", (event) => {
+  //     abg = handleOrientation(event);
+  //   });
+  // }
 
   document.querySelector("#slider1").addEventListener("input", (e) => {
     sliderVals[0] = +e.target.value;

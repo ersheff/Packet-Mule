@@ -1,4 +1,8 @@
 <style>
+  html {
+    overscroll-behavior: none;
+  }
+
   body {
     height: 100vh;
     max-width: 800px;
@@ -19,6 +23,11 @@
     margin: 0;
   }
 
+  .permission-container {
+    display: flex;
+    justify-content: center;
+  }
+
   .phone-window {
     width: 100%;
   }
@@ -37,6 +46,16 @@
     <div class="spacer"></div>
     <p>Learn more about Packet Mule <a href="https://github.com/ersheff/Packet-Mule">here</a>.</p>
   </form>
+</dialog>
+
+<dialog id="permission-modal">
+  <div>
+    <p>This application requires access to your device's motion and orientation sensors.</p>
+    <div class="permission-container">
+      <button id="permission-close">Cancel</button>
+      <button id="permission-confirm">OK</button>
+    </div>
+  </div>
 </dialog>
 
 <div class="phone-window">
