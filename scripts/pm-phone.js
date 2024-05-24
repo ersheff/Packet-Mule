@@ -4,8 +4,6 @@ export default {
   handlePhoneUser
 };
 
-let ready = false;
-
 function setup(socket, username) {
   document.querySelector("form").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -80,9 +78,7 @@ function setup(socket, username) {
     xyzabg12 = [...xyz, ...abg, ...sliderVals];
     if (JSON.stringify(sentXyzabg12) !== JSON.stringify(xyzabg12)) {
       sentXyzabg12 = Array.from(xyzabg12);
-      if (ready) {
-        socket.emit("phone", { target: username, data: sentXyzabg12 });
-      }
+      socket.emit("phone", { target: username, data: sentXyzabg12 });
     }
   }, 50);
 }
@@ -122,7 +118,6 @@ function usernameMethod(socket, username) {
 function handlePhoneUser(response) {
   if (response.success) {
     document.querySelector("#username-modal").close();
-    ready = true;
   } else {
     const usernameInput = document.querySelector("#username-input");
     usernameInput.value = "";
