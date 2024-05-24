@@ -73,7 +73,7 @@ function handlePm(incoming) {
     if (window.max) {
       window.max.outlet(...msg);
     } else {
-      const maxHtml = "<div>Max monitor:</div>";
+      let maxHtml = "<div>Max monitor:</div>";
       msg.forEach((value) => {
         maxHtml += `<div>${value}</div>`;
       });
@@ -87,7 +87,7 @@ function handlePhone(incoming) {
   if (window.max) {
     window.max.outlet(...msg);
   } else {
-    const phoneHtml = "<div>Phone monitor:</div>";
+    let phoneHtml = "<div>Phone monitor:</div>";
     msg.forEach((value) => {
       phoneHtml += `<div>${Number(value).toFixed(2)}</div>`;
     });
