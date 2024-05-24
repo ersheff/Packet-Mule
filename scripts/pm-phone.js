@@ -32,6 +32,7 @@ function setup(socket, username) {
               [xyz, lastXyz] = handleMotion(event, xyz, lastXyz);
             });
           }
+          document.querySelector("#motion-modal").close();
         })
         .catch(console.error);
     });
@@ -48,17 +49,20 @@ function setup(socket, username) {
       .addEventListener("click", () => {
         document.querySelector("#orientation-modal").close();
       });
-    document.querySelector("#motion-confirm").addEventListener("click", () => {
-      DeviceOrientationEvent.requestPermission()
-        .then((permissionState) => {
-          if (permissionState === "granted") {
-            window.addEventListener("deviceorientation", (event) => {
-              abg = handleOrientation(event);
-            });
-          }
-        })
-        .catch(console.error);
-    });
+    document
+      .querySelector("#orientation-confirm")
+      .addEventListener("click", () => {
+        DeviceOrientationEvent.requestPermission()
+          .then((permissionState) => {
+            if (permissionState === "granted") {
+              window.addEventListener("deviceorientation", (event) => {
+                abg = handleOrientation(event);
+              });
+            }
+            document.querySelector("#orientation-modal").close();
+          })
+          .catch(console.error);
+      });
   } else {
     window.addEventListener("deviceorientation", (event) => {
       abg = handleOrientation(event);
