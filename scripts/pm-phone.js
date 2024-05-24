@@ -24,7 +24,7 @@ function setup(socket, username) {
     .style.setProperty("overscroll-behavior", "none");
 
   if (typeof DeviceMotionEvent.requestPermission === "function") {
-    window.alert(
+    window.confirm(
       "This application requires access to your device's motion sensors."
     );
     DeviceMotionEvent.requestPermission()
@@ -43,7 +43,7 @@ function setup(socket, username) {
   }
 
   if (typeof DeviceOrientationEvent.requestPermission === "function") {
-    window.alert(
+    window.confirm(
       "This application requires access to your device's orientation sensors."
     );
     DeviceOrientationEvent.requestPermission()
