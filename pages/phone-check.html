@@ -2,13 +2,21 @@
   dialog div {
     text-align: center;
   }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+  }
 </style>
 
 <dialog id="phone-modal">
   <div>
     <h1>Packet Mule</h1>
     <p>Which interface to load?</p>
-    <button id="browser-confirm">Browser</button>
-    <button id="phone-confirm">Phone</button>
+    <div class="button-container">
+      <button id="browser-confirm">Browser</button>
+      <button id="phone-confirm">Phone</button>
+    </div>
   </div>
 </dialog>

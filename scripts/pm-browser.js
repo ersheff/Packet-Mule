@@ -82,7 +82,10 @@ function handlePhone(incoming) {
   const msg = ["phone", ...incoming];
   if (window.max) {
     window.max.outlet(...msg);
-  } else document.querySelector("#phone-monitor").innerText = msg;
+  } else
+    document.querySelector("#phone-monitor").innerText = msg.map((value) =>
+      value.toFixed(2)
+    );
 }
 
 function handleUserlist(incoming) {

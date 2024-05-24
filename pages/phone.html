@@ -4,9 +4,7 @@
   }
 
   body {
-    height: 100vh;
-    max-width: 800px;
-    margin: auto;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,7 +13,6 @@
 
   form {
     width: 90%;
-    max-width: 350px;
     text-align: center;
   }
 
@@ -26,7 +23,12 @@
   .permission-container {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 2rem;
+  }
+
+  .inner-modal {
+    width: 90%;
+    text-align: center;
   }
 
   .phone-window {
@@ -48,7 +50,7 @@
 </dialog>
 
 <dialog id="motion-modal">
-  <div>
+  <div class="inner-modal">
     <p>This application requires access to your device's motion sensors.</p>
     <div class="spacer"></div>
     <div class="permission-container">
@@ -59,7 +61,7 @@
 </dialog>
 
 <dialog id="orientation-modal">
-  <div>
+  <div class="inner-modal">
     <p>This application requires access to your device's orientation sensors.</p>
     <div class="spacer"></div>
     <div class="permission-container">
@@ -72,10 +74,13 @@
 <div class="phone-window">
   <p id="phone-user-output"></p>
   <div class="spacer"></div>
+  <div class="spacer"></div>
   <div class="slider-container">
     <input type="range" id="slider1" />
     <div class="spacer"></div>
+    <div class="spacer"></div>
     <input type="range" id="slider2" />
+    <div class="spacer"></div>
     <div class="spacer"></div>
   </div>
   <div>
