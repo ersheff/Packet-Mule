@@ -1,6 +1,5 @@
 <style>
   /* general */
-
   body {
     display: flex;
     flex-direction: column;
@@ -15,64 +14,24 @@
   }
 
   input[type="text"] {
-    height: 2rem;
     margin: 0;
-    padding: 0 0.5rem;
-  }
-
-  button {
-    height: 2rem;
-    padding: 0.2rem;
-  }
-
-  button:focus {
-    box-shadow: none;
   }
 
   .browser-header {
-    height: 8rem;
     flex-shrink: 0;
   }
 
-  .spacer {
+  .spacer,
+  .temp-spacer {
     height: 0.5rem;
     flex-shrink: 0;
   }
 
   /* modals */
 
-  dialog {
-    flex-direction: column;
-    padding: 1rem;
-  }
-
-  dialog * {
-    margin: 0;
-  }
-
-  dialog button {
-    margin-left: auto;
-    background: none;
-    border: none;
-  }
-
   .inner-modal {
-    display: flex;
-    flex-direction: column;
     width: 80%;
     min-height: 80%;
-  }
-
-  #userlist-modal ul {
-    padding: 0 1rem;
-  }
-
-  #userlist-modal li {
-    margin: 0;
-  }
-
-  #roomlist-modal ul {
-    padding: 0;
   }
 
   #roomlist-modal li {
@@ -80,24 +39,7 @@
     margin: 0.2rem 0;
   }
 
-  #room-input {
-    flex-shrink: 0;
-  }
-
   /* chat */
-  .chat-container {
-    height: calc(100vh - 10rem);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .chat-input-container {
-    display: flex;
-    align-items: center;
-    padding: 1rem 0;
-    gap: 0.5rem;
-    flex-shrink: 0;
-  }
 
   #chat-output {
     flex-grow: 1;
@@ -114,84 +56,88 @@
     background-color: #202632;
   }
 
+  .chat-input-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
   @media (max-width: 480px) {
     * {
       font-size: 0.9rem;
     }
 
+    input[type="text"],
+    button {
+      height: 2.5rem;
+      padding: 0.5rem;
+    }
+  }
+
+  @media (max-width: 360px) {
     body {
       padding: 0;
     }
 
     .browser-header {
-      height: 8rem;
       padding: 0.5rem;
     }
 
-    .inner-modal {
-      width: 90%;
-      min-height: 90%;
+    .temp-spacer {
+      height: 0;
     }
 
-    .chat-container {
-      height: calc(100vh - 8.5rem);
+    input[type="text"],
+    button {
+      height: 2rem;
     }
 
-    .chat-input-container {
-      gap: 0.2rem;
-      padding: 0.5rem;
-    }
-
-    .chat-input-container button {
-      font-size: 0.8rem;
+    button {
+      font-size: 0.7rem;
     }
 
     #chat-output {
       border: none;
     }
 
+    .chat-input-container {
+      padding: 0.25rem;
+    }
   }
 </style>
 
 <dialog id="username-modal">
   <form method="dialog">
     <h1>Packet Mule</h1>
-    <div class="spacer"></div>
     <input type="text" id="username-input" placeholder="enter username" />
-    <div class="spacer"></div>
-    <p>Learn more about Packet Mule <a href="https://github.com/ersheff/Packet-Mule">here</a>.</p>
+    <p>Learn more <a href="https://github.com/ersheff/Packet-Mule">here</a>.</p>
   </form>
 </dialog>
 
 <dialog class="list-modals" id="userlist-modal">
   <article class="inner-modal">
-    <button>X</button>
-    <div class="spacer"></div>
-    <div id="userlist-container"></div>
+    <div id="userlist-output"></div>
   </article>
 </dialog>
 
 <dialog class="list-modals" id="roomlist-modal">
   <article class="inner-modal">
-    <button>X</button>
-    <div class="spacer"></div>
     <input type="text" id="room-input" placeholder="create group" />
     <div class="spacer"></div>
-    <div id="roomlist-container"></div>
+    <div id="roomlist-output"></div>
   </article>
 </dialog>
 
 <div class="browser-header">
-  <p>To use Packet Mule in Max, load in a jweb object.</p>
   <p>Max monitor: <span id="max-monitor"></span></p>
   <p>Phone monitor: <span id="phone-monitor"></span></p>
 </div>
 
-<div class="chat-container">
-  <div id="chat-output"></div>
-  <div class="chat-input-container">
-    <input type="text" id="chat-input" />
-    <button id="userlist-button">Users</button>
-    <button id="roomlist-button">Groups</button>
-  </div>
+<div id="chat-output"></div>
+<div class="temp-spacer"></div>
+<div class="chat-input-container">
+  <input type="text" id="chat-input" />
+  <button id="userlist-button">Users</button>
+  <button id="roomlist-button">Groups</button>
 </div>

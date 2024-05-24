@@ -4,13 +4,7 @@ export default {
   handlePhoneUser
 };
 
-function setup(socket, username) {
-  document.querySelector("form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    socket.emit("phone-user", document.querySelector("#username-input").value);
-  });
-  document.querySelector("#username-modal").showModal();
-
+function setup(socket) {
   let xyz = [0, 0, 0];
   let abg = [0, 0, 0];
   let xyzabg12, sentXyzabg12;
@@ -78,7 +72,7 @@ function setup(socket, username) {
     xyzabg12 = [...xyz, ...abg, ...sliderVals];
     if (JSON.stringify(sentXyzabg12) !== JSON.stringify(xyzabg12)) {
       sentXyzabg12 = Array.from(xyzabg12);
-      socket.emit("phone", { target: username, data: sentXyzabg12 });
+      socket.emit("phone", sentXyzabg12);
     }
   }, 50);
 }
@@ -110,17 +104,32 @@ function handleOrientation(event) {
 }
 
 function usernameMethod(socket, username) {
+  document.querySelector("form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    socket.emit(
+      "phone-user",
+      document.querySelector("#phone-user-input").value
+    );
+  });
+  document.querySelector("#phone-user-modal").showModal();
   if (username) {
     socket.emit("phone-user", username);
   }
 }
 
 function handlePhoneUser(response) {
-  if (response.success) {
-    document.querySelector("#username-modal").close();
-  } else {
-    const usernameInput = document.querySelector("#username-input");
-    usernameInput.value = "";
-    usernameInput.placeholder = "try another username";
-  }
+  return new Promise((resolve) => {
+    if (response.success) {
+      document.querySelector("#phone-user-modal").close();
+      document.querySelector(
+        "#phone-user-output"
+      ).innerText = `Phone user: ${response.username}`;
+      resolve(true);
+    } else {
+      const usernameInput = document.querySelector("#phone-user-input");
+      usernameInput.value = "";
+      usernameInput.placeholder = "try another username";
+      resolve(false);
+    }
+  });
 }

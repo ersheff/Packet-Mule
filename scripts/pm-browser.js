@@ -1,45 +1,13 @@
 export default {
-  setup,
   usernameMethod,
   handleUsername,
+  setup,
   handleChat,
   handlePm,
   handlePhone,
   handleUserlist,
   handleRoomlist
 };
-
-function setup(socket) {
-  document.querySelector("form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    socket.emit("username", document.querySelector("#username-input").value);
-  });
-  document.querySelector("#username-modal").showModal();
-  document.querySelector("#chat-input").addEventListener("change", (e) => {
-    socket.emit("chat", e.target.value);
-    e.target.value = "";
-  });
-  document.querySelector("#userlist-button").addEventListener("click", () => {
-    document.querySelector("#userlist-modal").showModal();
-  });
-  document.querySelector("#roomlist-button").addEventListener("click", () => {
-    document.querySelector("#roomlist-modal").showModal();
-  });
-  if (!window.max) {
-    document.querySelectorAll(".list-modals").forEach((dialog) => {
-      dialog.querySelector("button").addEventListener("click", (e) => {
-        dialog.close();
-      });
-    });
-  }
-  document.querySelector("#room-input").addEventListener("change", (e) => {
-    socket.emit("join-room", e.target.value);
-    e.target.value = "";
-  });
-  window.addEventListener("beforeunload", () => {
-    socket.emit("purge-user", true);
-  });
-}
 
 function usernameMethod(socket, username) {
   if (username) {
@@ -58,6 +26,39 @@ function handleUsername(response) {
     usernameInput.value = "";
     usernameInput.placeholder = "try another username";
   }
+}
+
+function setup(socket) {
+  document.querySelector("form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    socket.emit("username", document.querySelector("#username-input").value);
+  });
+  document.querySelector("#username-modal").showModal();
+
+  document.querySelector("#chat-input").addEventListener("change", (e) => {
+    socket.emit("chat", e.target.value);
+    e.target.value = "";
+  });
+  document.querySelector("#userlist-button").addEventListener("click", () => {
+    document.querySelector("#userlist-modal").showModal();
+  });
+  document.querySelector("#roomlist-button").addEventListener("click", () => {
+    document.querySelector("#roomlist-modal").showModal();
+  });
+  document.querySelectorAll(".list-modals").forEach((dialog) => {
+    dialog.addEventListener("click", (e) => {
+      if (e.target.nodeName !== "INPUT") {
+        dialog.close();
+      }
+    });
+  });
+  document.querySelector("#room-input").addEventListener("change", (e) => {
+    socket.emit("join-room", e.target.value);
+    e.target.value = "";
+  });
+  window.addEventListener("beforeunload", () => {
+    socket.emit("purge-user", true);
+  });
 }
 
 function handleChat(incoming) {
@@ -85,11 +86,11 @@ function handlePhone(incoming) {
 }
 
 function handleUserlist(incoming) {
-  document.querySelector("#userlist-container").innerHTML = incoming;
+  document.querySelector("#userlist-output").innerHTML = incoming;
 }
 
 function handleRoomlist(socket, incoming) {
-  document.querySelector("#roomlist-container").innerHTML = incoming;
+  document.querySelector("#roomlist-output").innerHTML = incoming;
   document.querySelectorAll("input[type='checkbox']").forEach((check) => {
     check.addEventListener("click", (e) => {
       e.preventDefault();

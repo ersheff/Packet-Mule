@@ -3,6 +3,7 @@ export default {
 };
 
 function setup(socket) {
+  document.querySelector(".browser-header").style.display = "none";
   let payload = {};
   window.max.bindInlet("pm", function () {
     const args = Array.from(arguments);
@@ -18,11 +19,4 @@ function setup(socket) {
       payload = {};
     }
   }, 50);
-  document.querySelectorAll(".list-modals").forEach((dialog) => {
-    dialog.addEventListener("click", (e) => {
-      if (e.target.nodeName !== "INPUT") {
-        dialog.close();
-      }
-    });
-  });
 }

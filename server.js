@@ -112,8 +112,10 @@ function leaveRoom(socket, room) {
 }
 
 function handlePhone(socket, incoming) {
-  const target = users[incoming.target];
-  socket.to(target).emit("phone", incoming.data);
+  const target = users[socket.data.phone];
+  if (target) {
+    socket.to(target).emit("phone", incoming);
+  }
 }
 
 // connection handlers
@@ -149,9 +151,10 @@ function handleUsername(socket, username) {
 
 function handlePhoneUser(socket, username) {
   if (users[username]) {
-    socket.emit("username", { success: true });
+    socket.data.phone = username;
+    socket.emit("phone-user", { success: true, username: socket.data.phone });
   } else {
-    socket.emit("username", { success: false });
+    socket.emit("phone-user", { success: false });
   }
 }
 
