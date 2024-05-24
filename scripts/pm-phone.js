@@ -24,18 +24,21 @@ function setup(socket, username) {
     .style.setProperty("overscroll-behavior", "none");
 
   if (typeof DeviceMotionEvent.requestPermission === "function") {
-    window.confirm(
-      "This application requires access to your device's motion sensors."
-    );
-    DeviceMotionEvent.requestPermission()
-      .then((permissionState) => {
-        if (permissionState === "granted") {
-          window.addEventListener("devicemotion", (event) => {
-            [xyz, lastXyz] = handleMotion(event, xyz, lastXyz);
-          });
-        }
-      })
-      .catch(console.error);
+    if (
+      window.confirm(
+        "This application requires access to your device's motion sensors."
+      )
+    ) {
+      DeviceMotionEvent.requestPermission()
+        .then((permissionState) => {
+          if (permissionState === "granted") {
+            window.addEventListener("devicemotion", (event) => {
+              [xyz, lastXyz] = handleMotion(event, xyz, lastXyz);
+            });
+          }
+        })
+        .catch(console.error);
+    }
   } else {
     window.addEventListener("devicemotion", (event) => {
       [xyz, lastXyz] = handleMotion(event, xyz, lastXyz);
@@ -43,18 +46,21 @@ function setup(socket, username) {
   }
 
   if (typeof DeviceOrientationEvent.requestPermission === "function") {
-    window.confirm(
-      "This application requires access to your device's orientation sensors."
-    );
-    DeviceOrientationEvent.requestPermission()
-      .then((permissionState) => {
-        if (permissionState === "granted") {
-          window.addEventListener("deviceorientation", (event) => {
-            abg = handleOrientation(event);
-          });
-        }
-      })
-      .catch(console.error);
+    if (
+      window.confirm(
+        "This application requires access to your device's orientation sensors."
+      )
+    ) {
+      DeviceOrientationEvent.requestPermission()
+        .then((permissionState) => {
+          if (permissionState === "granted") {
+            window.addEventListener("deviceorientation", (event) => {
+              abg = handleOrientation(event);
+            });
+          }
+        })
+        .catch(console.error);
+    }
   } else {
     window.addEventListener("deviceorientation", (event) => {
       abg = handleOrientation(event);
