@@ -20,52 +20,50 @@ function setup(socket, username) {
   const sliderVals = [0, 0];
 
   if (typeof DeviceMotionEvent.requestPermission === "function") {
-    document.querySelector("#permission-modal").showModal();
-    document
-      .querySelector("#permission-close")
-      .addEventListener("click", () => {
-        document.querySelector("#permission-modal").close();
-      });
-    document
-      .querySelector("#permission-confirm")
-      .addEventListener("click", () => {
-        DeviceMotionEvent.requestPermission()
-          .then((permissionState) => {
-            if (permissionState === "granted") {
-              window.addEventListener("devicemotion", (event) => {
-                [xyz, lastXyz] = handleMotion(event, xyz, lastXyz);
-              });
-              window.addEventListener("deviceorientation", (event) => {
-                abg = handleOrientation(event);
-              });
-            }
-          })
-          .catch(console.error);
-      });
+    document.querySelector("#motion-modal").showModal();
+    document.querySelector("#motion-close").addEventListener("click", () => {
+      document.querySelector("#motion-modal").close();
+    });
+    document.querySelector("#motion-confirm").addEventListener("click", () => {
+      DeviceMotionEvent.requestPermission()
+        .then((permissionState) => {
+          if (permissionState === "granted") {
+            window.addEventListener("devicemotion", (event) => {
+              [xyz, lastXyz] = handleMotion(event, xyz, lastXyz);
+            });
+          }
+        })
+        .catch(console.error);
+    });
   } else {
     window.addEventListener("devicemotion", (event) => {
       [xyz, lastXyz] = handleMotion(event, xyz, lastXyz);
     });
+  }
+
+  if (typeof DeviceOrientationEvent.requestPermission === "function") {
+    document.querySelector("#orientation-modal").showModal();
+    document
+      .querySelector("#orientation-close")
+      .addEventListener("click", () => {
+        document.querySelector("#orientation-modal").close();
+      });
+    document.querySelector("#motion-confirm").addEventListener("click", () => {
+      DeviceOrientationEvent.requestPermission()
+        .then((permissionState) => {
+          if (permissionState === "granted") {
+            window.addEventListener("deviceorientation", (event) => {
+              abg = handleOrientation(event);
+            });
+          }
+        })
+        .catch(console.error);
+    });
+  } else {
     window.addEventListener("deviceorientation", (event) => {
       abg = handleOrientation(event);
     });
   }
-
-  // if (typeof DeviceOrientationEvent.requestPermission === "function") {
-  //   DeviceOrientationEvent.requestPermission()
-  //     .then((permissionState) => {
-  //       if (permissionState === "granted") {
-  //         window.addEventListener("deviceorientation", (event) => {
-  //           abg = handleOrientation(event);
-  //         });
-  //       }
-  //     })
-  //     .catch(console.error);
-  // } else {
-  //   window.addEventListener("deviceorientation", (event) => {
-  //     abg = handleOrientation(event);
-  //   });
-  // }
 
   document.querySelector("#slider1").addEventListener("input", (e) => {
     sliderVals[0] = +e.target.value;

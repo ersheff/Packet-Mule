@@ -26,6 +26,7 @@
   .permission-container {
     display: flex;
     justify-content: center;
+    gap: 1rem;
   }
 
   .phone-window {
@@ -48,12 +49,22 @@
   </form>
 </dialog>
 
-<dialog id="permission-modal">
+<dialog id="motion-modal">
   <div>
-    <p>This application requires access to your device's motion and orientation sensors.</p>
+    <p>This application requires access to your device's motion sensors.</p>
     <div class="permission-container">
-      <button id="permission-close">Cancel</button>
-      <button id="permission-confirm">OK</button>
+      <button id="motion-close">Cancel</button>
+      <button id="motion-confirm">OK</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="orientation-modal">
+  <div>
+    <p>This application requires access to your device's orientation sensors.</p>
+    <div class="permission-container">
+      <button id="orientation-close">Cancel</button>
+      <button id="orientation-confirm">OK</button>
     </div>
   </div>
 </dialog>
