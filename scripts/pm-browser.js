@@ -73,7 +73,11 @@ function handlePm(incoming) {
     if (window.max) {
       window.max.outlet(...msg);
     } else {
-      document.querySelector("#max-monitor").innerText = msg;
+      const maxHtml = "<div>Max monitor:</div>";
+      msg.forEach((value) => {
+        maxHtml += `<div>${value}</div>`;
+      });
+      document.querySelector("#max-monitor").innerHtml = maxHtml;
     }
   }
 }
@@ -82,10 +86,13 @@ function handlePhone(incoming) {
   const msg = ["phone", ...incoming];
   if (window.max) {
     window.max.outlet(...msg);
-  } else
-    document.querySelector("#phone-monitor").innerText = msg.map((value) =>
-      value.toFixed(2)
-    );
+  } else {
+    const phoneHtml = "<div>Phone monitor:</div>";
+    msg.forEach((value) => {
+      phoneHtml += `<div>${Number(value).toFixed(2)}</div>`;
+    });
+    document.querySelector("#phone-monitor").innerHTML = phoneHtml;
+  }
 }
 
 function handleUserlist(incoming) {

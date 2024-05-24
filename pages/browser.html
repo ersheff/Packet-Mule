@@ -21,6 +21,12 @@
     flex-shrink: 0;
   }
 
+  #max-monitor,
+  #phone-monitor {
+    display: flex;
+    gap: 2ch;
+  }
+
   .spacer,
   .temp-spacer {
     height: 0.5rem;
@@ -130,8 +136,8 @@
 </dialog>
 
 <div class="browser-header">
-  <p>Max monitor: <span id="max-monitor"></span></p>
-  <p>Phone monitor: <span id="phone-monitor"></span></p>
+  <div id="max-monitor"></div>
+  <div id="phone-monitor"></div>
 </div>
 
 <div id="chat-output"></div>
