@@ -15,8 +15,6 @@ const io = new Server(server, {
 });
 
 const port = process.env.PORT || 3000;
-const password = process.env.PM_PWD;
-const hashedPassword = bcrypt.hashSync(password, 10);
 
 server.listen(port, () => console.log(`Listening on port ${port}.`));
 
@@ -24,30 +22,64 @@ const users = {};
 const buffers = {};
 
 io.on("connection", (socket) => {
-  authentication(socket)
-    .then(() => {
-      socket.emit("auth", { success: true });
-      if (socket.recovered && socket.data.reconnectTimeout) {
-        console.log(`${socket.data.username} recovered!`);
-        clearTimeout(socket.data.reconnectTimeout);
-        socket.data.reconnectTimeout = null;
+  if (socket.recovered && socket.data.reconnectTimeout) {
+    console.log(`${socket.data.username} recovered!`);
+    clearTimeout(socket.data.reconnectTimeout);
+    socket.data.reconnectTimeout = null;
+  } else {
+    const { username, password, isPhone } = socket.handshake.auth;
+
+    socket.on("ready", async () => {
+      if (username || password) {
+        try {
+          const response = await auth(
+            socket,
+            username,
+            password,
+            isPhone,
+            false
+          );
+          socket.emit("auth", response);
+          if (!isPhone) {
+            updateUsers();
+            updateRooms(socket);
+          }
+        } catch (error) {
+          socket.emit("auth", error.response);
+        }
       }
-      socket.on("username", (incoming) => handleUsername(socket, incoming));
-      socket.on("phone-user", (incoming) => handlePhoneUser(socket, incoming));
-      socket.on("chat", (incoming) => handleChat(socket, incoming));
-      socket.on("pm", (incoming) => handlePm(socket, incoming));
-      socket.on("phone", (incoming) => handlePhone(socket, incoming));
-      socket.on("join-room", (room) => joinRoom(socket, room));
-      socket.on("leave-room", (room) => leaveRoom(socket, room));
-    })
-    .catch((error) => {
-      socket.emit("auth", { success: false });
-      handleDisconnect(socket);
-      socket.disconnect(true);
-      console.error(error.message);
     });
+
+    socket.on("auth", async (incoming) => {
+      const { username, password, isPhone } = incoming;
+      if (username || password) {
+        try {
+          const response = await auth(
+            socket,
+            username,
+            password,
+            isPhone,
+            true
+          );
+          socket.emit("auth", response);
+          if (!isPhone) {
+            updateUsers();
+            updateRooms(socket);
+          }
+        } catch (error) {
+          socket.emit("auth", error.response);
+        }
+      }
+    });
+  }
+
+  socket.on("chat", (incoming) => handleChat(socket, incoming));
+  socket.on("pm", (incoming) => handlePm(socket, incoming));
+  socket.on("phone-data", (incoming) => handlePhone(socket, incoming));
+  socket.on("join-room", (room) => joinRoom(socket, room));
+  socket.on("leave-room", (room) => leaveRoom(socket, room));
   socket.on("disconnect", (reason) => handleDisconnect(socket, reason));
-  socket.on("purge-user", () => handlePurge(socket));
+  socket.on("purge", () => (socket.data.purge = true));
 });
 
 setInterval(() => {
@@ -58,6 +90,112 @@ setInterval(() => {
     }
   }
 }, 50);
+
+// connection and auth
+
+async function auth(socket, username, password, isPhone, manual) {
+  const response = {
+    username: socket.data.username || socket.data.phoneTargetId,
+    password: socket.data.password,
+    isPhone,
+    manual
+  };
+  if (isPhone) {
+    if (username && !response.username && users[username]) {
+      response.username = username;
+      socket.data.phoneTargetId = users[username];
+      const phoneTargetSocket = io.sockets.sockets.get(users[username]);
+      phoneTargetSocket.data.phoneSourceId = socket.id;
+    }
+  } else {
+    if (username && !response.username && !users[username]) {
+      response.username = username;
+      users[username] = socket.id;
+      socket.data.username = username;
+    }
+  }
+  if (password && !response.password) {
+    try {
+      if (process.env.HASHED_PWD) {
+        response.password = await bcrypt.compare(
+          password,
+          process.env.HASHED_PWD
+        );
+        socket.data.password = response.password;
+      } else {
+        response.password = password === process.env.PLAIN_PWD;
+        socket.data.password = response.password;
+      }
+    } catch (error) {}
+  }
+  if (response.username && response.password) {
+    return response;
+  }
+  const error = new Error();
+  error.response = response;
+  throw error;
+}
+
+function handleDisconnect(socket, reason) {
+  if (!socket.data.username && !socket.data.phoneTargetId) return;
+  console.log(`${socket.id} disconnected due to ${reason}`);
+  if (socket.data.purge) {
+    if (socket.data.username) {
+      console.log(
+        `${socket.data.username}'s browser was refreshed, purging data.`
+      );
+    }
+    if (socket.data.phoneTargetId) {
+      console.log(
+        `${socket.data.phoneTargetId}'s phone was refreshed, purging data.`
+      );
+    }
+    clearData(socket);
+  } else {
+    socket.data.reconnectTimeout = setTimeout(() => {
+      clearData(socket);
+    }, disconnectTimeout - 1000);
+  }
+}
+
+function clearData(socket) {
+  const { username, phoneSourceId, phoneTargetId } = socket.data;
+  const $rooms = Array.from(socket.rooms).filter((room) =>
+    room.startsWith("$")
+  );
+  let lastIn$room = false;
+  for (const $room of $rooms) {
+    if (io.sockets.adapter.rooms.get($room).size === 1) {
+      lastIn$room = true;
+      break;
+    }
+  }
+  if (lastIn$room) updateRoomsAll();
+  socket.data = {};
+  socket.rooms.clear();
+  if (users[username]) {
+    delete users[username];
+    delete buffers[socket.id];
+    console.log(`${username}'s user data deleted.`);
+    updateUsers();
+  }
+  if (phoneSourceId) {
+    const phoneSourceSocket = io.sockets.sockets.get(phoneSourceId);
+    if (phoneSourceSocket) {
+      phoneSourceSocket.emit("phone-refresh");
+      console.log(`${username}'s phone being refreshed.`);
+      delete phoneSourceSocket.data.phoneTargetId;
+      console.log(`${username}'s phone data deleted.`);
+    }
+  }
+  if (phoneTargetId) {
+    const phoneTargetSocket = io.sockets.sockets.get(phoneTargetId);
+    if (phoneTargetSocket) {
+      delete phoneTargetSocket.data.phoneSourceId;
+      console.log(`${phoneTargetId}'s phone data deleted.`);
+    }
+  }
+}
 
 // data handlers
 
@@ -112,100 +250,10 @@ function leaveRoom(socket, room) {
 }
 
 function handlePhone(socket, incoming) {
-  const target = users[socket.data.phone];
+  const target = socket.data.phoneTargetId;
   if (target) {
-    socket.to(target).emit("phone", incoming);
+    socket.to(target).emit("phone-data", incoming);
   }
-}
-
-// connection handlers
-
-function authentication(socket) {
-  return new Promise((resolve, reject) => {
-    if (password) {
-      const token = socket.handshake.auth.token;
-      if (!token || !bcrypt.compareSync(token, hashedPassword)) {
-        reject(new Error("Authentication failed."));
-      } else {
-        console.log(`${socket.id} authenticated.`);
-        resolve();
-      }
-    } else resolve();
-  });
-}
-
-function handleUsername(socket, username) {
-  if (users[username]) {
-    socket.emit("username", { success: false });
-  } else {
-    socket.data.username = username;
-    users[socket.data.username] = socket.id;
-    socket.emit("username", {
-      success: true,
-      username: socket.data.username
-    });
-    updateUsers();
-    updateRooms(socket);
-  }
-}
-
-function handlePhoneUser(socket, username) {
-  if (users[username]) {
-    socket.data.phone = username;
-    socket.emit("phone-user", { success: true, username: socket.data.phone });
-  } else {
-    socket.emit("phone-user", { success: false });
-  }
-}
-
-function handleDisconnect(socket, reason) {
-  if (!socket.data.username) return;
-  console.log(`${socket.id} disconnected due to ${reason}`);
-  if (socket.data.purge) {
-    console.log(
-      `${socket.data.username}'s browser was refreshed, purging data.`
-    );
-    clearData(socket);
-  } else {
-    socket.data.reconnectTimeout = setTimeout(() => {
-      clearData(socket);
-    }, disconnectTimeout - 1000);
-  }
-}
-
-function handlePurge(socket) {
-  socket.data.purge = true;
-  const $rooms = Array.from(socket.rooms).filter((room) =>
-    room.startsWith("$")
-  );
-  for (const $room of $rooms) {
-    if (io.sockets.adapter.rooms.get($room).size === 1) {
-      socket.data.lastIn$room = true;
-      break;
-    }
-  }
-}
-
-function clearData(socket) {
-  const { username } = socket.data;
-  if (users[username]) {
-    delete users[username];
-    delete buffers[socket.id];
-    updateUsers();
-  }
-  const $rooms = Array.from(socket.rooms).filter((room) =>
-    room.startsWith("$")
-  );
-  for (const $room of $rooms) {
-    if (io.sockets.adapter.rooms.get($room).size === 1) {
-      socket.data.lastIn$room = true;
-      break;
-    }
-  }
-  socket.rooms.clear();
-  if (socket.data.lastIn$room) updateRoomsAll();
-  socket.data = {};
-  console.log(`${username}'s user data deleted.`);
 }
 
 // updaters

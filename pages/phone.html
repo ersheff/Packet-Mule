@@ -5,27 +5,25 @@
 
   body {
     height: 100dvh;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 2rem;
   }
 
-  form {
-    width: 90%;
-    text-align: center;
-  }
-
-  p {
-    margin: 0;
-  }
-
   .permission-container {
+    width: 100%;
     display: flex;
     justify-content: center;
-    gap: 2rem;
+    gap: 1rem;
   }
 
+  .permission-container button {
+    width: 33.33%;
+  }
+
+  form,
   .inner-modal {
     width: 90%;
     text-align: center;
@@ -40,11 +38,12 @@
   }
 </style>
 
-<dialog id="phone-user-modal">
+<dialog id="auth-modal">
   <form method="dialog">
     <h1>Packet Mule</h1>
-    <p>The mobile interface is used to send phone sensor data to an existing user's Max patch.</p>
-    <input type="text" id="phone-user-input" placeholder="enter existing Max username" />
+    <input type="text" name="username" id="username-input" placeholder="enter username of Max user" />
+    <input type="text" name="password" id="password-input" placeholder="enter password" />
+    <button type="submit">Submit</button>
     <p>Learn more <a href="https://github.com/ersheff/Packet-Mule">here</a>.</p>
   </form>
 </dialog>
@@ -72,20 +71,16 @@
 </dialog>
 
 <div class="phone-window">
-  <p id="phone-user-output"></p>
-  <div class="spacer"></div>
+  <p id="phone-user"></p>
   <div class="spacer"></div>
   <div class="slider-container">
     <input type="range" id="slider1" />
     <div class="spacer"></div>
-    <div class="spacer"></div>
     <input type="range" id="slider2" />
-    <div class="spacer"></div>
     <div class="spacer"></div>
   </div>
   <div>
     <p>Accelerometer</p>
-    <div class="spacer"></div>
     <div id="accel-data">
       <p>0</p>
       <p>0</p>
@@ -93,7 +88,6 @@
     </div>
     <div class="spacer"></div>
     <p>Gyro</p>
-    <div class="spacer"></div>
     <div id="gyro-data">
       <p>0</p>
       <p>0</p>

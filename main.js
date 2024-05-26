@@ -4,59 +4,70 @@ import pmPhone from "./scripts/pm-phone.js";
 import { phoneCheck } from "./scripts/pm-phone-check.js";
 
 const params = new URLSearchParams(window.location.search);
-const username = params.get("user");
-const pass = params.get("pass");
-let phone = params.has("phone");
-const phoneUser = params.get("phone");
+let isPhone = params.has("phone");
+const username = params.get("user") || params.get("phone");
+const password = params.get("pass");
 
 const mobile = isMobile();
 
-const socket = io({ auth: { token: pass } });
+const socket = io({
+  auth: { username, password, isPhone }
+});
 
-socket.on("auth", async (response) => {
-  if (!response.success) {
-    document.body.innerHTML = await fetchHTML("./pages/auth-error.html");
-    return;
-  }
+socket.on("connect", async () => {
   if (!socket.recovered) {
-    if (mobile && !phone) {
+    removeBrowserListeners();
+    if (mobile && !isPhone) {
       document.body.innerHTML = await fetchHTML("./pages/phone-check.html");
-      phone = await phoneCheck();
+      isPhone = await phoneCheck();
     }
-    if (phone) {
+    if (isPhone) {
       document.body.innerHTML = await fetchHTML("./pages/phone.html");
-      pmPhone.usernameMethod(socket, phoneUser);
-    } else {
-      document.body.innerHTML = await fetchHTML("./pages/browser.html");
-      pmBrowser.setup(socket);
-      pmBrowser.usernameMethod(socket, username);
-      if (window.max) {
-        pmMax.setup(socket);
-      }
+      pmPhone.setup(socket);
+      return;
     }
-    addListeners(socket, phone);
+    document.body.innerHTML = await fetchHTML("./pages/browser.html");
+    pmBrowser.setup(socket);
+    if (window.max) {
+      pmMax.setup(socket);
+    }
   }
 });
 
-function addListeners(socket, phone) {
-  // browser and max handlers
-  if (!phone) {
-    socket.on("username", (response) => pmBrowser.handleUsername(response));
-    socket.on("chat", (incoming) => pmBrowser.handleChat(incoming));
-    socket.on("pm", (incoming) => pmBrowser.handlePm(incoming));
-    socket.on("phone", (incoming) => pmBrowser.handlePhone(incoming));
-    socket.on("userlist", (incoming) => pmBrowser.handleUserlist(incoming));
-    socket.on("roomlist", (incoming) =>
-      pmBrowser.handleRoomlist(socket, incoming)
-    );
-  } else {
-    socket.on("phone-user", async (response) => {
-      const phoneConfirm = await pmPhone.handlePhoneUser(response);
-      if (phoneConfirm) {
-        pmPhone.setup(socket);
-      }
-    });
+socket.on("auth", async (response) => {
+  try {
+    if (response.isPhone) {
+      await pmPhone.auth(response);
+      pmPhone.init(socket);
+      socket.once("phone-refresh", async () => {
+        document.body.innerHTML = await fetchHTML("./pages/phone-refresh.html");
+      });
+      console.log("Ready to send phone data.");
+    } else {
+      removeBrowserListeners();
+      await pmBrowser.auth(response);
+      addBrowserListeners();
+      console.log("Ready to listen as browser/max.");
+    }
+  } catch (error) {
+    console.log(error);
   }
+});
+
+function addBrowserListeners() {
+  socket.on("chat", (incoming) => pmBrowser.chat(incoming));
+  socket.on("pm", (incoming) => pmBrowser.pm(incoming));
+  socket.on("phone-data", (incoming) => pmBrowser.phoneData(incoming));
+  socket.on("userlist", (incoming) => pmBrowser.userlist(incoming));
+  socket.on("roomlist", (incoming) => pmBrowser.roomlist(socket, incoming));
+}
+
+function removeBrowserListeners() {
+  socket.off("chat");
+  socket.off("pm");
+  socket.off("phone-data");
+  socket.off("userlist");
+  socket.off("roomlist");
 }
 
 async function fetchHTML(path) {

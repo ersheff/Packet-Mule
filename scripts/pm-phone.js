@@ -1,10 +1,64 @@
 export default {
   setup,
-  usernameMethod,
-  handlePhoneUser
+  auth,
+  init
 };
 
 function setup(socket) {
+  document.querySelector("form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const outgoing = {
+      username: e.target.username.value,
+      password: e.target.password.value,
+      isPhone: true
+    };
+    socket.emit("auth", outgoing);
+  });
+  window.addEventListener("pagehide", () => {
+    socket.emit("purge");
+  });
+  window.addEventListener("unload", () => {
+    socket.emit("purge");
+  });
+  document.querySelector("#auth-modal").showModal();
+  socket.emit("ready");
+}
+
+function auth(response) {
+  const { username, password, manual } = response;
+  const usernameInput = document.querySelector("#username-input");
+  const passwordInput = document.querySelector("#password-input");
+  const authModal = document.querySelector("#auth-modal");
+  const phoneUser = document.querySelector("#phone-user");
+
+  if (username && password) {
+    phoneUser.innerText = `Sending data to: ${username}`;
+    authModal.close();
+    return;
+  }
+
+  if (username) {
+    phoneUser.innerText = `Sending data to: ${username}`;
+    if (!manual) {
+      usernameInput.hidden = true;
+    }
+  } else if (manual) {
+    usernameInput.value = "";
+    usernameInput.placeholder = "try another username";
+  }
+
+  if (password) {
+    if (!manual) {
+      passwordInput.hidden = true;
+    }
+  } else if (manual) {
+    passwordInput.value = "";
+    passwordInput.placeholder = "try another password";
+  }
+  throw "Phone authentication failed";
+}
+
+function init(socket) {
   let xyz = [0, 0, 0];
   let abg = [0, 0, 0];
   let xyzabg12, sentXyzabg12;
@@ -72,7 +126,7 @@ function setup(socket) {
     xyzabg12 = [...xyz, ...abg, ...sliderVals];
     if (JSON.stringify(sentXyzabg12) !== JSON.stringify(xyzabg12)) {
       sentXyzabg12 = Array.from(xyzabg12);
-      socket.emit("phone", sentXyzabg12);
+      socket.emit("phone-data", sentXyzabg12);
     }
   }, 50);
 }
@@ -101,35 +155,4 @@ function handleOrientation(event) {
       <p>pitch: ${abg[1].toFixed(2)}</p>
       <p>roll: ${abg[2].toFixed(2)}</p>`;
   return abg;
-}
-
-function usernameMethod(socket, username) {
-  document.querySelector("form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    socket.emit(
-      "phone-user",
-      document.querySelector("#phone-user-input").value
-    );
-  });
-  document.querySelector("#phone-user-modal").showModal();
-  if (username) {
-    socket.emit("phone-user", username);
-  }
-}
-
-function handlePhoneUser(response) {
-  return new Promise((resolve) => {
-    if (response.success) {
-      document.querySelector("#phone-user-modal").close();
-      document.querySelector(
-        "#phone-user-output"
-      ).innerText = `Phone user: ${response.username}`;
-      resolve(true);
-    } else {
-      const usernameInput = document.querySelector("#phone-user-input");
-      usernameInput.value = "";
-      usernameInput.placeholder = "try another username";
-      resolve(false);
-    }
-  });
 }
