@@ -20,11 +20,14 @@ function setup(socket) {
   window.addEventListener("unload", () => {
     socket.emit("purge");
   });
+  socket.on("phonelist", (phonelist) => {
+    document.querySelector("#username-input").innerHTML = phonelist;
+  });
   document.querySelector("#auth-modal").showModal();
-  socket.emit("ready");
+  socket.emit("ready", true);
 }
 
-function auth(response) {
+function auth(socket, response) {
   const { username, password, manual } = response;
   const usernameInput = document.querySelector("#username-input");
   const passwordInput = document.querySelector("#password-input");
@@ -43,8 +46,7 @@ function auth(response) {
       usernameInput.hidden = true;
     }
   } else if (manual) {
-    usernameInput.value = "";
-    usernameInput.placeholder = "try another username";
+    socket.emit("phonelist");
   }
 
   if (password) {

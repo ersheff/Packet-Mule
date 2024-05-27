@@ -37,7 +37,7 @@ socket.on("connect", async () => {
 socket.on("auth", async (response) => {
   try {
     if (response.isPhone) {
-      await pmPhone.auth(response);
+      await pmPhone.auth(socket, response);
       pmPhone.init(socket);
       socket.once("phone-refresh", async () => {
         document.body.innerHTML = await fetchHTML("./pages/phone-refresh.html");
