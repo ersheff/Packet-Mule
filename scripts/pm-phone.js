@@ -35,16 +35,16 @@ function auth(socket, response) {
   const phoneUser = document.querySelector("#phone-user");
 
   if (username && password) {
-    phoneUser.innerText = `Sending data to: ${username}`;
+    phoneUser.innerHTML = `Sending data to: <strong>${username}</strong>`;
     authModal.close();
     return;
   }
 
   if (username) {
-    phoneUser.innerText = `Sending data to: ${username}`;
+    phoneUser.innerHTML = `Sending data to: <strong>${username}</strong>`;
     if (!manual) {
       usernameInput.hidden = true;
-    }
+    } else usernameInput.disabled = true;
   } else if (manual) {
     socket.emit("phonelist");
   }
@@ -52,10 +52,10 @@ function auth(socket, response) {
   if (password) {
     if (!manual) {
       passwordInput.hidden = true;
-    }
+    } else passwordInput.disabled = true;
   } else if (manual) {
     passwordInput.value = "";
-    passwordInput.placeholder = "try another password";
+    passwordInput.placeholder = "incorrect password";
   }
   throw "Phone authentication failed";
 }

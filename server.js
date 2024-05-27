@@ -49,11 +49,11 @@ io.on("connection", (socket) => {
         } catch (error) {
           socket.emit("auth", error.response);
           if (isPhone) {
-            sendPhonelist(socket);
+            updatePhonelist(socket);
           }
         }
       } else if (p) {
-        sendPhonelist(socket);
+        updatePhonelist(socket);
       }
     });
 
@@ -85,7 +85,7 @@ io.on("connection", (socket) => {
   socket.on("phone-data", (incoming) => handlePhone(socket, incoming));
   socket.on("join-room", (room) => joinRoom(socket, room));
   socket.on("leave-room", (room) => leaveRoom(socket, room));
-  socket.on("phonelist", () => sendPhonelist(socket));
+  socket.on("phonelist", () => updatePhonelist(socket));
   socket.on("disconnect", (reason) => handleDisconnect(socket, reason));
   socket.on("purge", () => (socket.data.purge = true));
 });
@@ -117,7 +117,14 @@ async function auth(socket, username, password, isPhone, manual) {
       users[username].phone = socket.id;
     }
   } else {
-    if (username && !response.username && !users[username]) {
+    const isRoom = io.sockets.adapter.rooms.has(username);
+    if (
+      username &&
+      !response.username &&
+      !users[username] &&
+      username !== "all" &&
+      !isRoom
+    ) {
       response.username = username;
       users[username] = { id: socket.id, phone: false };
       socket.data.username = username;
@@ -242,6 +249,10 @@ function handlePm(socket, incoming) {
 }
 
 function joinRoom(socket, room) {
+  if (room === "all" || room in users) {
+    socket.emit("room-error");
+    return;
+  }
   const $room = `$${room}`;
   const $roomNew = !io.sockets.adapter.rooms.has($room);
   socket.join($room);
@@ -270,19 +281,22 @@ function handlePhone(socket, incoming) {
 
 function updateUsers() {
   const userArray = Object.keys(users);
-  let userlist = `<p>Connected users: ${userArray.length}</p><ul>`;
-  userArray.forEach((user) => {
-    userlist += `<li>${user}</li>`;
-  });
-  userlist += "</ul>";
-  io.emit("userlist", userlist);
+  // let userlist = `<p>Connected users: ${userArray.length}</p><ul>`;
+  // userArray.forEach((user) => {
+  //   userlist += `<li>${user}</li>`;
+  // });
+  // userlist += "</ul>";
+  // io.emit("userlist", userlist);
+  io.emit("userlist", userArray);
 }
 
-function sendPhonelist(socket) {
-  let phonelist = `<option value="">Select a user</option>`;
+function updatePhonelist(socket) {
+  let phonelist = `<option value="">- Select a user -</option>`;
   Object.entries(users).forEach(([username, userInfo]) => {
     if (!userInfo.phone) {
       phonelist += `<option value="${username}">${username}</option>`;
+    } else {
+      phonelist += `<option disabled>${username} (in use)</option>`;
     }
   });
   socket.emit("phonelist", phonelist);

@@ -21,6 +21,12 @@
 
   .browser-header {
     flex-shrink: 0;
+    font-size: 0.9rem;
+  }
+
+  .browser-header div {
+    display: flex;
+    gap: 1ch;
   }
 
   .spacer,
@@ -82,6 +88,11 @@
   }
 
   @media (max-width: 480px) {
+    .browser-header div {
+      flex-direction: column;
+      gap: 0;
+    }
+
     .chat-input-container {
       flex-direction: column;
       gap: 0.75rem;
@@ -156,8 +167,14 @@
 </dialog>
 
 <div class="browser-header">
-  <p>Max monitor: <span id="max-monitor"></span></p>
-  <p>Phone monitor: <span id="phone-monitor"></span></p>
+  <div>
+    <p>Max monitor: </p>
+    <p id="max-monitor"></p>
+  </div>
+  <div>
+    <p>Phone monitor: </p>
+    <p id="phone-monitor"></p>
+  </div>
 </div>
 
 <div id="chat-output"></div>

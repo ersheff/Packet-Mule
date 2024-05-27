@@ -60,6 +60,7 @@ function addBrowserListeners() {
   socket.on("phone-data", (incoming) => pmBrowser.phoneData(incoming));
   socket.on("userlist", (incoming) => pmBrowser.userlist(incoming));
   socket.on("roomlist", (incoming) => pmBrowser.roomlist(socket, incoming));
+  socket.on("room-error", () => pmBrowser.roomError());
 }
 
 function removeBrowserListeners() {
@@ -68,6 +69,7 @@ function removeBrowserListeners() {
   socket.off("phone-data");
   socket.off("userlist");
   socket.off("roomlist");
+  socket.off("room-error");
 }
 
 async function fetchHTML(path) {
