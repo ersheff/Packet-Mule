@@ -103,7 +103,13 @@ To save time, you can optionally add parameters to the end of the url to load Pa
 - `?phone` - (load the phone interface automatically without being prompted)
 - `?phone=username` - (load the phone interface with a preselected Max or browser target)
 
-You can chain parameters with `&` - for example: `https://your-server-url.com/?user=eric&pass=123` will automaticaly load the client with the username "eric" (assuming that the username is available and the password is correct). If any of the parameters are invalid (e.g. a username that is not available or an incorrect password), you will see the standard username or password prompts.
+You can chain parameters with `&`. For example:
+
+```
+https://your-server-url.com/?user=eric&pass=123
+```
+
+will automaticaly load the client with the username "eric" (assuming that the username is available and the password is correct). If any of the parameters are invalid (e.g. a username that is not available or an incorrect password), you will see the standard username or password prompts.
 
 ## Other details
 
