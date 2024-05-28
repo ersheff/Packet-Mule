@@ -1,6 +1,6 @@
 # Packet Mule
 
-![Packet Mule Max Login](images/pm-max-login.png)
+<img src="images/pm-max-login.png" alt="Packet Mule Max Login" style="width: 50%;">
 
 Packet Mule is a web-based tool to simplify network communication in Cycling 74's [Max](https://cycling74.com/products/max). It is especially useful for remote communication, in-patch chat, or situations where OSC may not be viable (e.g. a public or institutional network where OSC is blocked).
 
@@ -44,7 +44,7 @@ Although Packet Mule does not transmit any sensitive information, you may want t
 
 ## Using Packet Mule in Max
 
-![Packet Mule Max Chat](images/pm-max-chat.png)
+<img src="images/pm-max-chat.png" alt="Packet Mule Max Chat" style="width: 50%;">
 
 - Launch your Packet Mule server's url in a jweb object in Max.
 - If your username and password are accepted, the jweb window will load a basic chat application.
