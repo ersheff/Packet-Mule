@@ -57,7 +57,7 @@ socket.on("auth", async (response) => {
 function addBrowserListeners() {
   socket.on("chat", (incoming) => pmBrowser.chat(incoming));
   socket.on("pm", (incoming) => pmBrowser.pm(incoming));
-  socket.on("phone-data", (incoming) => pmBrowser.phoneData(incoming));
+  socket.on("phone", (incoming) => pmBrowser.phone(incoming));
   socket.on("userlist", (incoming) => pmBrowser.userlist(incoming));
   socket.on("roomlist", (incoming) => pmBrowser.roomlist(socket, incoming));
   socket.on("room-error", () => pmBrowser.roomError());
@@ -66,7 +66,7 @@ function addBrowserListeners() {
 function removeBrowserListeners() {
   socket.off("chat");
   socket.off("pm");
-  socket.off("phone-data");
+  socket.off("phone");
   socket.off("userlist");
   socket.off("roomlist");
   socket.off("room-error");

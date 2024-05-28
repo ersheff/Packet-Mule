@@ -3,7 +3,7 @@ export default {
   auth,
   chat,
   pm,
-  phoneData,
+  phone,
   userlist,
   roomlist,
   roomError
@@ -107,8 +107,8 @@ function pm(incoming) {
   }
 }
 
-function phoneData(incoming) {
-  const msg = ["phone-data", ...incoming];
+function phone(incoming) {
+  const msg = ["phone", ...incoming];
   if (window.max) {
     window.max.outlet(...msg);
   } else {

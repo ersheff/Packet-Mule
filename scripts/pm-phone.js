@@ -128,7 +128,7 @@ function init(socket) {
     xyzabg12 = [...xyz, ...abg, ...sliderVals];
     if (JSON.stringify(sentXyzabg12) !== JSON.stringify(xyzabg12)) {
       sentXyzabg12 = Array.from(xyzabg12);
-      socket.emit("phone-data", sentXyzabg12);
+      socket.emit("phone", sentXyzabg12);
     }
   }, 50);
 }

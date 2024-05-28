@@ -82,7 +82,7 @@ io.on("connection", (socket) => {
 
   socket.on("chat", (incoming) => handleChat(socket, incoming));
   socket.on("pm", (incoming) => handlePm(socket, incoming));
-  socket.on("phone-data", (incoming) => handlePhone(socket, incoming));
+  socket.on("phone", (incoming) => handlePhone(socket, incoming));
   socket.on("join-room", (room) => joinRoom(socket, room));
   socket.on("leave-room", (room) => leaveRoom(socket, room));
   socket.on("phonelist", () => updatePhonelist(socket));
@@ -108,8 +108,16 @@ async function auth(socket, username, password, isPhone, manual) {
     isPhone,
     manual
   };
+  const isRoom = io.sockets.adapter.rooms.has(username);
   if (isPhone) {
-    if (username && !response.username && users[username]) {
+    if (
+      username &&
+      !response.username &&
+      users[username] &&
+      username !== "all" &&
+      username !== "phone" &&
+      !isRoom
+    ) {
       response.username = username;
       socket.data.phoneTarget = username;
       const phoneTargetSocket = io.sockets.sockets.get(users[username].id);
@@ -117,12 +125,12 @@ async function auth(socket, username, password, isPhone, manual) {
       users[username].phone = socket.id;
     }
   } else {
-    const isRoom = io.sockets.adapter.rooms.has(username);
     if (
       username &&
       !response.username &&
       !users[username] &&
       username !== "all" &&
+      username !== "phone" &&
       !isRoom
     ) {
       response.username = username;
@@ -224,24 +232,29 @@ function handleChat(socket, incoming) {
 function handlePm(socket, incoming) {
   incoming.forEach((packet) => {
     const { target } = packet;
-    const userId = users[target].id;
+    const outgoing = {
+      header: packet.header,
+      data: packet.data
+    };
+    if (target === "all") {
+      outgoing.source = socket.data.username;
+      socket.broadcast.emit("pm", [outgoing]);
+      return;
+    }
+    if (target in users) {
+      const userId = users[target].id;
+      outgoing.source = socket.data.username;
+      buffers[userId] = buffers[userId] || [];
+      buffers[userId].push(outgoing);
+      return;
+    }
     const $room = `$${target}`;
     const $roomTarget = io.sockets.adapter.rooms.has($room);
-    if (userId || $roomTarget || target === "all") {
-      const outgoing = {
-        source: $roomTarget ? target : socket.data.username,
-        header: packet.header,
-        data: packet.data
-      };
-      if (target === "all") {
-        socket.broadcast.emit("pm", [outgoing]);
-      } else if ($roomTarget) {
-        buffers[$room] = buffers[$room] || [];
-        buffers[$room].push(outgoing);
-      } else {
-        buffers[userId] = buffers[userId] || [];
-        buffers[userId].push(outgoing);
-      }
+    if ($roomTarget) {
+      outgoing.source = target;
+      buffers[$room] = buffers[$room] || [];
+      buffers[$room].push(outgoing);
+      return;
     } else {
       console.log(`No target found for ${target}.`);
     }
@@ -273,7 +286,7 @@ function leaveRoom(socket, room) {
 function handlePhone(socket, incoming) {
   const target = socket.data.phoneTarget;
   if (target) {
-    socket.to(users[target].id).emit("phone-data", incoming);
+    socket.to(users[target].id).emit("phone", incoming);
   }
 }
 
