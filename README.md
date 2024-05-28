@@ -1,5 +1,7 @@
 # Packet Mule
 
+![Packet Mule Max Login](images/pm-max-login.png)
+
 Packet Mule is a web-based tool to simplify network communication in Cycling 74's [Max](https://cycling74.com/products/max). It is especially useful for remote communication, in-patch chat, or situations where OSC may not be viable (e.g. a public or institutional network where OSC is blocked).
 
 It's not a library or a package - there's nothing to install on the client (other than Max), though you may want to download the [pm-demo.maxpat](pm-demo.maxpat) file.
@@ -41,6 +43,8 @@ Although Packet Mule does not transmit any sensitive information, you may want t
 - To use an encrypted password, enter `HASHED_PWD` as the name of the environment variable and the hashed version of your desired password as the value. A hashed version can be generated using the bcrypt library in [Node.js](https://www.npmjs.com/package/bcrypt) or [Python](https://pypi.org/project/bcrypt/), though you can also try using an [online hash generator](https://bcrypt-generator.com).
 
 ## Using Packet Mule in Max
+
+![Packet Mule Max Chat](images/pm-max-chat.png)
 
 - Launch your Packet Mule server's url in a jweb object in Max.
 - If your username and password are accepted, the jweb window will load a basic chat application.
