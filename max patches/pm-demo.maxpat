@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 98.0, 131.0, 1340.0, 782.0 ],
+		"rect" : [ 53.0, 62.0, 1182.0, 764.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -47,7 +47,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 753.0, 85.0, 354.0, 33.0 ],
+					"patching_rect" : [ 604.0, 81.0, 354.0, 33.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
 					"presentation_rect" : [ 753.0, 108.0, 332.0, 33.0 ],
@@ -132,8 +132,7 @@
 					"patching_rect" : [ 10.0, 110.0, 360.0, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 10.0, 58.0, 360.0, 22.0 ],
-					"tabmode" : 0,
-					"text" : "127.0.0.1:3000"
+					"tabmode" : 0
 				}
 
 			}
@@ -148,8 +147,8 @@
 					"patching_rect" : [ 681.0, 557.0, 353.0, 100.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 7,
-					"presentation_rect" : [ 372.0, 273.0, 332.0, 100.0 ],
-					"text" : "will automaticaly load Packet Mule with the username 'eric' (assuming that the username is available and the password is correct).\n\nIf any of the paramaters are invalid (e.g. a username that is not available or an invalid password), you will see the standard username or password prompts."
+					"presentation_rect" : [ 372.0, 246.0, 332.0, 100.0 ],
+					"text" : "will automaticaly load Packet Mule with the username \"eric\" (assuming that the username is available and the password is correct).\n\nIf any of the parameters are invalid (e.g. a username that is not available or an incorrect password), you will see the standard username or password prompts."
 				}
 
 			}
@@ -163,7 +162,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 681.0, 535.0, 354.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 372.0, 251.0, 332.0, 20.0 ],
+					"presentation_rect" : [ 372.0, 224.0, 332.0, 20.0 ],
 					"text" : "https://your-server-url.com/?user=eric&pass=123 ",
 					"textcolor" : [ 1.0, 0.717647058823529, 0.0, 1.0 ]
 				}
@@ -192,8 +191,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 919.0, 178.0, 142.0, 22.0 ],
-					"text" : "sprintf pm %s number $1"
+					"patching_rect" : [ 919.0, 178.0, 145.0, 22.0 ],
+					"text" : "sprintf pm %s number \\$1"
 				}
 
 			}
@@ -209,7 +208,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 413.0, 733.0, 81.0, 24.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 372.0, 449.5, 81.0, 24.0 ],
+					"presentation_rect" : [ 372.0, 443.0, 81.0, 24.0 ],
 					"text" : "incoming"
 				}
 
@@ -268,8 +267,7 @@
 					"patching_rect" : [ 842.0, 122.0, 140.0, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 754.0, 387.0, 140.0, 22.0 ],
-					"tabmode" : 0,
-					"text" : "eric"
+					"tabmode" : 0
 				}
 
 			}
@@ -277,15 +275,15 @@
 				"box" : 				{
 					"bgcolor" : [ 0.109803921568627, 0.129411764705882, 0.172549019607843, 0.0 ],
 					"id" : "obj-26",
-					"linecount" : 10,
+					"linecount" : 8,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 681.0, 392.0, 353.0, 141.0 ],
+					"patching_rect" : [ 681.0, 392.0, 353.0, 114.0 ],
 					"presentation" : 1,
-					"presentation_linecount" : 10,
-					"presentation_rect" : [ 372.0, 108.0, 332.0, 141.0 ],
-					"text" : "You can optionally add these parameters to the end of the url to load Packet Mule with predetermined settings (replacing \"username\" or \"password\" with your own values).\n\n?user=username - (load with chosen username)\n?phone - (load phone interface)\n?phone=username - (load phone interface with a target user) \n?pass=password - (bypass password prompt)\n\nYou can chain parameters with & - for example: "
+					"presentation_linecount" : 8,
+					"presentation_rect" : [ 372.0, 108.0, 339.0, 114.0 ],
+					"text" : "To save time, you can optionally add parameters to the end of the url to load Packet Mule with preselected settings (replacing \"username\" or \"password\" with your own values).\n\n?user=username - (load with chosen username) \n?pass=password - (bypass password prompt)\n\nYou can chain parameters with & - for example: "
 				}
 
 			}
@@ -434,10 +432,10 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 604.0, 264.0, 73.0, 22.0 ],
+					"patching_rect" : [ 604.0, 264.0, 89.0, 22.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 754.0, 328.0, 73.0, 22.0 ],
-					"text" : "pm all xy $1"
+					"presentation_rect" : [ 754.0, 328.0, 89.0, 22.0 ],
+					"text" : "pm all xy $1 $2"
 				}
 
 			}
@@ -1138,10 +1136,10 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 420.0, 315.0, 162.0, 47.0 ],
+					"patching_rect" : [ 420.0, 315.0, 164.0, 47.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
-					"presentation_rect" : [ 753.0, 143.0, 234.0, 33.0 ],
+					"presentation_rect" : [ 753.0, 143.0, 238.0, 33.0 ],
 					"text" : "Messages starting with \"pm all\" are sent to everyone that is connected to your server."
 				}
 
@@ -1184,7 +1182,7 @@
 					"patching_rect" : [ 77.0, 734.0, 360.0, 22.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 10.0, 444.0, 360.0, 22.0 ],
-					"text" : "title \"Packet Mule\""
+					"text" : "title \"Cycling '74\""
 				}
 
 			}
@@ -1374,7 +1372,7 @@
 					"presentation" : 1,
 					"presentation_rect" : [ 10.0, 82.0, 360.0, 360.0 ],
 					"rendermode" : 0,
-					"url" : "127.0.0.1:3000"
+					"url" : "https://cycling74.com"
 				}
 
 			}
