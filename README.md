@@ -1,8 +1,8 @@
 # Packet Mule
 
-Packet Mule is a web-based tool to simplify network communication in Cycling 74's[Max](https://cycling74.com/products/max). It is especially useful for remote communication, in-patch chat, or situations where OSC may not be viable (e.g. a public or institutional network where OSC is blocked).
+Packet Mule is a web-based tool to simplify network communication in Cycling 74's [Max](https://cycling74.com/products/max). It is especially useful for remote communication, in-patch chat, or situations where OSC may not be viable (e.g. a public or institutional network where OSC is blocked).
 
-It's not a library or a package - there's nothing to install on the client (other than Max), though you may want to download the [pm-demo.maxpat] file.
+It's not a library or a package - there's nothing to install on the client (other than Max), though you may want to download the [pm-demo.maxpat](pm-demo.maxpat) file.
 
 ## Deploy your own Packet Mule server
 
@@ -29,7 +29,7 @@ Due to data and bandwidth limitations, Packet Mule currently requires deploying 
 
 The next page will ask for additional information about your web service deployment. If you intend to use Render's free tier, make sure that you select "Free" under "Instance Type". Otherwise, you can optionally change the following before clicking "Create Web Service" to finish:
 
-- Name (this will determine your server's url in the format `https://server-name.onrender.com`)
+- Name (this will determine your server's url)
 - Region (choose the one closest to you)
 - Environment Variables (used to set a password, see additional details [below](#setting-a-password))
 
@@ -37,18 +37,27 @@ The next page will ask for additional information about your web service deploym
 
 Although Packet Mule does not transmit any sensitive information, you may want to set a password to limit access to your server. This is mostly to prevent unwanted traffic that might interrupt your performance or eat into your data and bandwidth limits. Packet Mule is set up to store either a plain text password or an encrypted password using [bcrypt](https://en.wikipedia.org/wiki/Bcrypt#:~:text=bcrypt%20is%20a%20password%2Dhashing,presented%20at%20USENIX%20in%201999.).
 
-- To use a plain text password, enter PLAIN_PWD as the name of the environment variable and your desired password as the value.
-- To use an encrypted password, enter HASHED_PWD as the name of the environment variable and the hashed version of your desired password as the value. A hashed version can be generated using the bcrypt library in [Node.js](https://www.npmjs.com/package/bcrypt) or [Python](https://pypi.org/project/bcrypt/), though you can also try using an [online hash generator](https://bcrypt-generator.com).
+- To use a plain text password, enter `PLAIN_PWD` as the name of the environment variable and your desired password as the value.
+- To use an encrypted password, enter `HASHED_PWD` as the name of the environment variable and the hashed version of your desired password as the value. A hashed version can be generated using the bcrypt library in [Node.js](https://www.npmjs.com/package/bcrypt) or [Python](https://pypi.org/project/bcrypt/), though you can also try using an [online hash generator](https://bcrypt-generator.com).
 
 ## Using Packet Mule in Max
 
 - Launch your Packet Mule server's url in a jweb object in Max.
 - If your username and password are accepted, the jweb window will load a basic chat application.
-- Outgoing messages can be sent to the inlet of the jweb object in the format `pm target header data...`.
-  - `target` can either be "all" (to send to everyone), the username of another connected user, or a [group](#groups) name.
-  - `header` can be any message header that you want e.g. volume, pitch, cue, etc. It should be a single word without spaces - otherwise, your message will be received in an unexpected format.
-  - `data...` can be a Max list comprised of one or more integers, floats, symbols, or any combination thereof.
-- Incoming messages are received at the jweb object's outlet in the format `source header data...`.
+- Outgoing messages can be sent to the inlet of the jweb object in the format:
+
+```
+pm target header data...
+```
+
+- `target` can either be "all" (to send to everyone), the username of another connected user, or a [group](#groups) name.
+- `header` can be any message header that you want e.g. volume, pitch, cue, etc. It should be a single word without spaces - otherwise, your message will be received in an unexpected format.
+- `data...` can be a Max list comprised of one or more integers, floats, symbols, or any combination thereof.
+- Incoming messages are received at the jweb object's outlet in the format:
+
+```
+source header data...
+```
 
 ## Using Packet Mule on a phone
 
@@ -56,7 +65,11 @@ The Packet Mule phone client is intended to send basic control data (acceleromet
 
 - Launch your Packet Mule server's url in the browser on your phone. Tap "Phone" when prompted to choose an interface.
 - Choose your username (the one that you are using in the Max client) from the dropdown menu.
-- Phone sensor data is received at the jweb object's outlet in the format `phone accelX accelY accelZ yaw pitch roll slider1 slider2`.
+- Phone sensor data is received at the jweb object's outlet in the format:
+
+```
+phone accelX accelY accelZ yaw pitch roll slider1 slider2
+```
 
 ## Using Packet Mule in a browser
 
@@ -69,8 +82,17 @@ Clicking the "Groups" button in the Max or browser client will open a separate w
 - To create a group, enter the desired group name in the text field as a single word without spaces.
 - To join or leave an existing group, check or uncheck the box next to the group name.
 - Groups are deleted automatically once there is no longer anyone in the group.
-- To send messages to a group, use the group name as the target in your Max message - `pm groupname header data...`
-- When receiving messages in a group, the source will be the group name instead of the individual sender - `groupname header data...`
+- To send messages to a group, use the group name as the target in your Max message:
+
+```
+pm groupname header data...
+```
+
+- When receiving messages in a group, the source will be the group name instead of the individual sender:
+
+```
+groupname header data...
+```
 
 ## Optional url parameters
 
