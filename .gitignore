@@ -2,5 +2,3 @@ node_modules
 .DS_Store
 .env
 nodemon.json
-pm-demo-mule.maxpat
-pm-demo-local.maxpat
