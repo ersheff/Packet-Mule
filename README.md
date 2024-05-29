@@ -4,7 +4,7 @@
 
 Packet Mule is a web-based tool to simplify network communication in Cycling 74's [Max](https://cycling74.com/products/max). It is especially useful for remote communication, in-patch chat, or situations where OSC may not be viable (e.g. a public or institutional network where OSC is blocked).
 
-It's not a library or a package - there's nothing to install on the client (other than Max), though you may want to download the [pm-demo.maxpat](pm-demo.maxpat) file.
+It's not a library or a package - there's nothing to install on the client (other than Max), though you may want to download the [pm-demo.maxpat](max-patches/pm-demo.maxpat) file.
 
 ## Deploy your own Packet Mule server
 
