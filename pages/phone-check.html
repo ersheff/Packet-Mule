@@ -1,0 +1,28 @@
+<style>
+  dialog div {
+    width: 100%;
+    text-align: center;
+  }
+
+  .button-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .button-container button {
+    width: 33.33%;
+  }
+</style>
+
+<dialog id="phone-modal">
+  <div>
+    <h1>Packet Mule</h1>
+    <p>Which interface to load?</p>
+    <div class="button-container">
+      <button id="browser-confirm">Browser</button>
+      <button id="phone-confirm">Phone</button>
+    </div>
+  </div>
+</dialog>

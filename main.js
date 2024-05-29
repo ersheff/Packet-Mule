@@ -1,50 +1,92 @@
-import { handlePhone } from "./pm-phone.js";
-import { handleMax } from "./pm-max.js";
+import pmBrowser from "./scripts/pm-browser.js";
+import pmMax from "./scripts/pm-max.js";
+import pmPhone from "./scripts/pm-phone.js";
+import { phoneCheck } from "./scripts/pm-phone-check.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const phone = params.get("phone");
-  const max = params.get("max");
-  const pass = params.get("pass");
+const params = new URLSearchParams(window.location.search);
+let isPhone = params.has("phone");
+const username = params.get("user") || params.get("phone");
+const password = params.get("pass");
 
-  if (!window.max && !phone) {
-    document.body.innerHTML =
-      /* HTML */
-      `<div style="padding: 1rem; text-align: center;">
-        <h1 style="margin-top: 1rem;">Whatchoo doin'?</h1>
-        <p>
-          To use Packet Mule in Max, load this page in a jweb object with the
-          query string <code>?pass=password</code>.
-        </p>
-        <p>
-          To send controller data from your phone to Max, load this page in a
-          mobile browser with the query string
-          <code>?pass=password?phone=username</code>.
-        </p>
-      </div>`;
-    return;
-  }
+const mobile = isMobile();
 
-  const socket = io({ auth: { token: pass } });
-
-  socket.on("auth", (response) => {
-    if (!response.success) {
-      document.body.innerHTML = `<h1 style="text-align: center;">What's the password?</h1>`;
-      return;
-    }
-
-    if (!window.max) {
-      handlePhone(socket, phone);
-      return;
-    }
-
-    document.body.innerHTML =
-      /* HTML */
-      `<dialog>
-        <form method="dialog">
-          <input type="text" id="username-input" placeholder="enter username" />
-        </form>
-      </dialog>`;
-    handleMax(socket, max);
-  });
+const socket = io({
+  auth: { username, password, isPhone }
 });
+
+socket.on("connect", async () => {
+  if (!socket.recovered) {
+    removeBrowserListeners();
+    if (mobile && !isPhone) {
+      document.body.innerHTML = await fetchHTML("./pages/phone-check.html");
+      isPhone = await phoneCheck();
+    }
+    if (isPhone) {
+      document.body.innerHTML = await fetchHTML("./pages/phone.html");
+      pmPhone.setup(socket);
+      return;
+    }
+    document.body.innerHTML = await fetchHTML("./pages/browser.html");
+    pmBrowser.setup(socket);
+    if (window.max) {
+      pmMax.setup(socket);
+    }
+  }
+});
+
+socket.on("auth", async (response) => {
+  try {
+    if (response.isPhone) {
+      await pmPhone.auth(socket, response);
+      pmPhone.init(socket);
+      socket.once("phone-refresh", async () => {
+        document.body.innerHTML = await fetchHTML("./pages/phone-refresh.html");
+      });
+      console.log("Ready to send phone data.");
+    } else {
+      removeBrowserListeners();
+      await pmBrowser.auth(response);
+      addBrowserListeners();
+      console.log("Ready to listen as browser/max.");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+function addBrowserListeners() {
+  socket.on("chat", (incoming) => pmBrowser.chat(incoming));
+  socket.on("pm", (incoming) => pmBrowser.pm(incoming));
+  socket.on("phone", (incoming) => pmBrowser.phone(incoming));
+  socket.on("userlist", (incoming) => pmBrowser.userlist(incoming));
+  socket.on("roomlist", (incoming) => pmBrowser.roomlist(socket, incoming));
+  socket.on("room-error", () => pmBrowser.roomError());
+}
+
+function removeBrowserListeners() {
+  socket.off("chat");
+  socket.off("pm");
+  socket.off("phone");
+  socket.off("userlist");
+  socket.off("roomlist");
+  socket.off("room-error");
+}
+
+async function fetchHTML(path) {
+  const response = await fetch(path);
+  return await response.text();
+}
+
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+}
+
+// simulate disconnect for recovery testing
+// socket.on("connect", () => {
+//   setTimeout(() => {
+//     socket.io.engine.close();
+//   }, 5000);
+//   console.log(socket.recovered);
+// });

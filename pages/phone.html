@@ -1,0 +1,97 @@
+<style>
+  html {
+    overscroll-behavior: none;
+  }
+
+  body {
+    height: 100dvh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+
+  .permission-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .permission-container button {
+    width: 33.33%;
+  }
+
+  form,
+  .inner-modal {
+    width: 90%;
+    text-align: center;
+  }
+
+  .phone-window {
+    width: 100%;
+  }
+
+  .spacer {
+    height: 1rem;
+  }
+</style>
+
+<dialog id="auth-modal">
+  <form method="dialog">
+    <h1>Packet Mule</h1>
+    <select name="username" id="username-input"></select>
+    <input type="text" name="password" id="password-input" placeholder="enter password" />
+    <button type="submit">Submit</button>
+    <p>Learn more <a href="https://github.com/ersheff/Packet-Mule">here</a>.</p>
+  </form>
+</dialog>
+
+<dialog id="motion-modal">
+  <div class="inner-modal">
+    <p>This application requires access to your device's motion sensors.</p>
+    <div class="spacer"></div>
+    <div class="permission-container">
+      <button id="motion-close">Cancel</button>
+      <button id="motion-confirm">OK</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="orientation-modal">
+  <div class="inner-modal">
+    <p>This application requires access to your device's orientation sensors.</p>
+    <div class="spacer"></div>
+    <div class="permission-container">
+      <button id="orientation-close">Cancel</button>
+      <button id="orientation-confirm">OK</button>
+    </div>
+  </div>
+</dialog>
+
+<div class="phone-window">
+  <p id="phone-user"></p>
+  <div class="spacer"></div>
+  <div class="slider-container">
+    <input type="range" id="slider1" />
+    <div class="spacer"></div>
+    <input type="range" id="slider2" />
+    <div class="spacer"></div>
+  </div>
+  <div>
+    <p>Accelerometer</p>
+    <div id="accel-data">
+      <p>0</p>
+      <p>0</p>
+      <p>0</p>
+    </div>
+    <div class="spacer"></div>
+    <p>Gyro</p>
+    <div id="gyro-data">
+      <p>0</p>
+      <p>0</p>
+      <p>0</p>
+    </div>
+  </div>
+</div>

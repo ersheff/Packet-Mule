@@ -1,0 +1,189 @@
+<style>
+  :root {
+    --pico-line-height: 1;
+  }
+
+  /* general */
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 1rem;
+  }
+
+  form {
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+  }
+
+  .browser-header {
+    flex-shrink: 0;
+    font-size: 0.9rem;
+  }
+
+  .browser-header div {
+    display: flex;
+    gap: 1ch;
+  }
+
+  .spacer,
+  .temp-spacer {
+    height: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  button {
+    border: none;
+  }
+
+  button:focus {
+    box-shadow: none;
+  }
+
+  /* modals */
+
+  .inner-modal {
+    width: 80%;
+    min-height: 80%;
+  }
+
+  #roomlist-modal li {
+    list-style: none;
+  }
+
+  /* chat */
+
+  #chat-output {
+    flex-grow: 1;
+    overflow-y: auto;
+    border: 1px solid #0172ad;
+  }
+
+  #chat-output p {
+    margin: 0;
+    padding: 0.5rem;
+  }
+
+  #chat-output p:nth-child(odd) {
+    background-color: #202632;
+  }
+
+  .chat-input-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .chat-input-container input[type="text"] {
+    margin: 0;
+  }
+
+  .chat-input-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 480px) {
+    .browser-header div {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .chat-input-container {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .chat-input-buttons {
+      width: 100%;
+    }
+
+    .chat-input-buttons button {
+      flex: 1;
+      padding: 0.75rem;
+    }
+  }
+
+
+  @media (max-width: 360px) {
+    body {
+      padding: 0;
+    }
+
+    form,
+    .inner-modal {
+      width: 90%;
+    }
+
+    .browser-header {
+      padding: 0.5rem;
+    }
+
+    .temp-spacer {
+      height: 0;
+    }
+
+    #chat-output {
+      border: none;
+    }
+
+    .chat-input-container {
+      padding: 0.5rem;
+      gap: 0.5rem;
+    }
+
+    .chat-input-buttons button {
+      padding: 0.6rem;
+    }
+  }
+</style>
+
+<dialog id="auth-modal">
+  <form method="dialog">
+    <h1>Packet Mule</h1>
+    <input type="text" name="username" id="username-input" placeholder="enter username" />
+    <input type="text" name="password" id="password-input" placeholder="enter password" />
+    <button type="submit">Submit</button>
+    <p>Learn more <a href="https://github.com/ersheff/Packet-Mule">here</a>.</p>
+  </form>
+</dialog>
+
+<dialog class="list-modals" id="userlist-modal">
+  <article class="inner-modal">
+    <div id="userlist-output"></div>
+  </article>
+</dialog>
+
+<dialog class="list-modals" id="roomlist-modal">
+  <article class="inner-modal">
+    <input type="text" id="room-input" placeholder="create group" />
+    <div class="spacer"></div>
+    <div id="roomlist-output"></div>
+  </article>
+</dialog>
+
+<div class="browser-header">
+  <div>
+    <p>Max monitor: </p>
+    <p id="max-monitor"></p>
+  </div>
+  <div>
+    <p>Phone monitor: </p>
+    <p id="phone-monitor"></p>
+  </div>
+</div>
+
+<div id="chat-output"></div>
+<div class="temp-spacer"></div>
+<div class="temp-spacer"></div>
+<div class="chat-input-container">
+  <input type="text" id="chat-input" />
+  <div class="chat-input-buttons">
+    <button id="userlist-button">Users</button>
+    <button id="roomlist-button">Groups</button>
+  </div>
+</div>
